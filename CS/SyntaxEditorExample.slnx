@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="SyntaxEditor/SyntaxEditor.csproj" />
+  <Project Path="SyntaxEditorExample/SyntaxEditorExample.csproj" />
+</Solution>
