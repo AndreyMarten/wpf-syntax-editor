@@ -1,4 +1,4 @@
-﻿using DevExpress.Mvvm.UI;
+using DevExpress.Mvvm.UI;
 using SyntaxEditor.Models;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ namespace SyntaxEditor {
 
     public class SyntaxEditorService : ServiceBase, ISyntaxEditorService {
         public async Task<IReadOnlyCollection<string>> GetLanguagesAsync(CancellationToken cancellationToken = default) {
-            if (this.AssociatedObject is not SyntaxEditor editor)
+            if (AssociatedObject is not SyntaxEditor editor)
                 throw new InvalidOperationException(
                     "SyntaxEditor is not attached.");
 
@@ -22,13 +22,13 @@ namespace SyntaxEditor {
         }
 
         public void MarkAsSaved() {
-            if(this.AssociatedObject is SyntaxEditor editor) {
+            if(AssociatedObject is SyntaxEditor editor) {
                 editor.MarkAsSaved();
             }
         }
 
         public void RegisterLanguage(LanguageDescriptor language) {
-            if (this.AssociatedObject is SyntaxEditor editor) {
+            if (AssociatedObject is SyntaxEditor editor) {
                 editor.RegisterLanguage(language);
             }
         }

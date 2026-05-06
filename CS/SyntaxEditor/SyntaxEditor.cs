@@ -105,11 +105,11 @@ namespace SyntaxEditor {
         }
 
         void SetEditorText(string text) {
-            this.SendCommand(EditorCommandType.SetText, text);
+            SendCommand(EditorCommandType.SetText, text);
         }
 
         public void MarkAsSaved() {
-            this.SendCommand(EditorCommandType.MarkAsSaved);
+            SendCommand(EditorCommandType.MarkAsSaved);
         }
 
         public ICommand MarkAsSavedCommand { get; private set; }
@@ -125,7 +125,7 @@ namespace SyntaxEditor {
         }
 
         void SetEditorReadOnly(bool readOnly) {
-            this.SendCommand(EditorCommandType.SetReadOnly, readOnly);
+            SendCommand(EditorCommandType.SetReadOnly, readOnly);
         }
 
         public bool IsModified {
@@ -715,7 +715,7 @@ namespace SyntaxEditor {
             if (string.IsNullOrWhiteSpace(language))
                 return;
 
-            this.SendCommand(EditorCommandType.SetLanguage, language);
+            SendCommand(EditorCommandType.SetLanguage, language);
         }
 
         public async Task<IReadOnlyList<string>> GetAvailableLanguagesAsync(CancellationToken cancellationToken = default) {
@@ -782,33 +782,33 @@ namespace SyntaxEditor {
             AttachWebView(newWebView);
         }
 
-        void AttachWebView(WebView2 webView) {
-            this.webView = webView;
+        void AttachWebView(WebView2 newWebView) {
+            webView = newWebView;
             editorReady = false;
             _ = InitializeAsync();
         }
 
         async Task InitializeAsync() {
-            var webView = this.webView;
-            if (webView == null)
+            var currentWebView = webView;
+            if (currentWebView == null)
                 return;
 
-            await webView.EnsureCoreWebView2Async();
+            await currentWebView.EnsureCoreWebView2Async();
 
-            if (this.webView != webView)
+            if (webView != currentWebView)
                 return;
 
-            webView.CoreWebView2.WebMessageReceived -= CoreWebView2_WebMessageReceived;
-            webView.CoreWebView2.WebMessageReceived += CoreWebView2_WebMessageReceived;
-            webView.CoreWebView2.ContextMenuRequested -= CoreWebView2_ContextMenuRequested;
-            webView.CoreWebView2.ContextMenuRequested += CoreWebView2_ContextMenuRequested;
+            currentWebView.CoreWebView2.WebMessageReceived -= CoreWebView2_WebMessageReceived;
+            currentWebView.CoreWebView2.WebMessageReceived += CoreWebView2_WebMessageReceived;
+            currentWebView.CoreWebView2.ContextMenuRequested -= CoreWebView2_ContextMenuRequested;
+            currentWebView.CoreWebView2.ContextMenuRequested += CoreWebView2_ContextMenuRequested;
 
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Monaco", "index.html");
 
             if (!File.Exists(path))
                 throw new FileNotFoundException(path);
 
-            webView.Source = new Uri(path);
+            currentWebView.Source = new Uri(path);
         }
 
         void CoreWebView2_ContextMenuRequested(object? sender, CoreWebView2ContextMenuRequestedEventArgs e) {
@@ -831,10 +831,10 @@ namespace SyntaxEditor {
         }
 
         public void DetachWebView() {
-            var webView = this.webView;
-            if (webView?.CoreWebView2 != null) {
-                webView.CoreWebView2.WebMessageReceived -= CoreWebView2_WebMessageReceived;
-                webView.CoreWebView2.ContextMenuRequested -= CoreWebView2_ContextMenuRequested;
+            var currentWebView = webView;
+            if (currentWebView?.CoreWebView2 != null) {
+                currentWebView.CoreWebView2.WebMessageReceived -= CoreWebView2_WebMessageReceived;
+                currentWebView.CoreWebView2.ContextMenuRequested -= CoreWebView2_ContextMenuRequested;
             }
         }
 

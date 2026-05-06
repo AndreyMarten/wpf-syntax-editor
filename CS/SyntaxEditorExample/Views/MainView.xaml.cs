@@ -1,4 +1,4 @@
-﻿using SyntaxEditorExample.ViewModels;
+using SyntaxEditorExample.ViewModels;
 
 namespace SyntaxEditorExample
 {
@@ -7,7 +7,7 @@ namespace SyntaxEditorExample
         public MainView()
         {
             InitializeComponent();
-            this.DataContext = new MainViewModel();
+            DataContext = new MainViewModel();
         }
     }
 }

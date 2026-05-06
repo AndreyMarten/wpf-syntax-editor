@@ -10,27 +10,27 @@ using System.Collections.ObjectModel;
 namespace SyntaxEditorExample.ViewModels {
     public class RulesViewModel : ViewModelBase {
 
-        public IMessageBoxService MessageBoxService => this.GetService<IMessageBoxService>();
+        public IMessageBoxService MessageBoxService => GetService<IMessageBoxService>();
 
         protected ObservableCollection<MonacoThemeRule> rules;
         public ObservableCollection<MonacoThemeRule> Rules {
             get {
-                if (this.rules == null) {
-                    this.rules = new ObservableCollection<MonacoThemeRule>();
+                if (rules == null) {
+                    rules = new ObservableCollection<MonacoThemeRule>();
                 }
 
-                return this.rules;
+                return rules;
             }
         }
 
         public string? RawRulesText {
-            get { return this.GetValue<string?>(); }
-            set { this.SetValue(value); }
+            get { return GetValue<string?>(); }
+            set { SetValue(value); }
         }
 
         public bool IsRawRulesMode {
-            get { return this.GetValue<bool>(); }
-            set { this.SetValue(value); }
+            get { return GetValue<bool>(); }
+            set { SetValue(value); }
         }
 
         void ParseRawJS() {
@@ -51,7 +51,7 @@ namespace SyntaxEditorExample.ViewModels {
                     MessageButton.OK,
                     MessageIcon.Error);
 
-                this.IsRawRulesMode = true;
+                IsRawRulesMode = true;
             }
 
             Rules.Clear();

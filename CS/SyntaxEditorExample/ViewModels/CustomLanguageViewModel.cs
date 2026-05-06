@@ -7,18 +7,18 @@ namespace SyntaxEditorExample.ViewModels {
         static readonly Regex LanguageIdRegex = new("^[a-zA-Z0-9\\-_]+$", RegexOptions.Compiled);
 
         public string LanguageId {
-            get { return this.GetValue<string>(); }
-            set { this.SetValue(value); }
+            get { return GetValue<string>(); }
+            set { SetValue(value); }
         }
 
         public string? Monarch {
-            get { return this.GetValue<string?>(); }
-            set { this.SetValue(value); }
+            get { return GetValue<string?>(); }
+            set { SetValue(value); }
         }
 
         public string? Configuration {
-            get { return this.GetValue<string?>(); }
-            set { this.SetValue(value); }
+            get { return GetValue<string?>(); }
+            set { SetValue(value); }
         }
 
         public string? Error => null;

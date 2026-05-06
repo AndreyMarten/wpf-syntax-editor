@@ -209,24 +209,24 @@ namespace VS
 			RefreshLanguagesCommand = new AsyncCommand(RefreshLanguages, CanRefreshLanguages);
 		}
 
-		public IOpenFileDialogService OpenFileDialogService { get { return this.GetService<IOpenFileDialogService>(); } }
+		public IOpenFileDialogService OpenFileDialogService { get { return GetService<IOpenFileDialogService>(); } }
 
-		public ISaveFileDialogService SaveFileDialogService { get { return this.GetService<ISaveFileDialogService>(); } }
+		public ISaveFileDialogService SaveFileDialogService { get { return GetService<ISaveFileDialogService>(); } }
 
-		public ISyntaxEditorService SyntaxEditorService { get { return this.GetService<ISyntaxEditorService>(); } }
+		public ISyntaxEditorService SyntaxEditorService { get { return GetService<ISyntaxEditorService>(); } }
 
-		public IDialogService DialogService { get { return this.GetService<IDialogService>(); } }
+		public IDialogService DialogService { get { return GetService<IDialogService>(); } }
 
 		public string Text {
-			get { return this.GetValue<string>(); }
-			set { this.SetValue(value); }
+			get { return GetValue<string>(); }
+			set { SetValue(value); }
 		}
 
 		[Command]
 		public void OpenFile() {
-			if (this.OpenFileDialogService.ShowDialog()) {
-				var file = this.OpenFileDialogService.Files.First();
-				this.Text = File.ReadAllText(Path.Combine(file.DirectoryName, file.Name));
+			if (OpenFileDialogService.ShowDialog()) {
+				var file = OpenFileDialogService.Files.First();
+				Text = File.ReadAllText(Path.Combine(file.DirectoryName, file.Name));
 			}
 		}
 
@@ -236,69 +236,69 @@ namespace VS
 
 		[Command]
 		public void SaveFile() {
-			if (this.SaveFileDialogService.ShowDialog()) {
-				var file = this.SaveFileDialogService.File;
-				File.WriteAllText(Path.Combine(file.DirectoryName, file.Name), this.Text);
-				this.SyntaxEditorService.MarkAsSaved();
+			if (SaveFileDialogService.ShowDialog()) {
+				var file = SaveFileDialogService.File;
+				File.WriteAllText(Path.Combine(file.DirectoryName, file.Name), Text);
+				SyntaxEditorService.MarkAsSaved();
 			}
 		}
 
 		public bool CanSaveFile() {
-			return this.SaveFileDialogService != null;
+			return SaveFileDialogService != null;
 		}
 		public ObservableCollection<string> Languages {
 			get {
-              if (this.languages == null) {
-					this.languages = new ObservableCollection<string>();
+              if (languages == null) {
+					languages = new ObservableCollection<string>();
 				}
 
-             return this.languages;
+             return languages;
 			}
 		}
 
 		public IReadOnlyList<MonacoThemeRule> Rules {
-			get { return this.GetValue<IReadOnlyList<MonacoThemeRule>>(); }
-			set { this.SetValue(value); }
+			get { return GetValue<IReadOnlyList<MonacoThemeRule>>(); }
+			set { SetValue(value); }
 		}
 
 		[Command]
 		public async void Initialize() {
 			await RefreshLanguages();
-			this.Language = this.Languages.Where(c => c.Contains("csharp")).FirstOrDefault();
+			Language = Languages.Where(c => c.Contains("csharp")).FirstOrDefault();
 		}
 
 		public string? Language {
-			get { return this.GetValue<string?>(); }
-			set { this.SetValue(value); }
+			get { return GetValue<string?>(); }
+			set { SetValue(value); }
 		}
 
 		public AsyncCommand RefreshLanguagesCommand { get; private set; }
 
 		async Task RefreshLanguages() {
-			if (this.SyntaxEditorService == null) {
+			if (SyntaxEditorService == null) {
 				throw new InvalidOperationException("SyntaxEditorService is not available.");
 			}
 
-			this.Languages.Clear();
-			var result = await this.SyntaxEditorService.GetLanguagesAsync();
+			Languages.Clear();
+			var result = await SyntaxEditorService.GetLanguagesAsync();
 			if (result != null) {
-				this.Languages.AddRange(result);
+				Languages.AddRange(result);
 			}
 		}
 		bool CanRefreshLanguages() {
-			return this.SyntaxEditorService != null;
+			return SyntaxEditorService != null;
 		}
 
 		[Command]
 		public void ChangeRules() {
 
-            if (this.DialogService == null) {
+            if (DialogService == null) {
                 throw new InvalidOperationException("DialogService is not available.");
             }
 
 			var vm = new RulesViewModel();
-            if (this.Rules != null)
-                vm.Rules.AddRange(this.Rules);
+            if (Rules != null)
+                vm.Rules.AddRange(Rules);
 
             var buttonSave = new UICommand() {
                 Id = "save",
@@ -329,21 +329,21 @@ namespace VS
                 return;
             }
             //update rules so that theme can apply it.
-            this.Rules = vm.Rules.ToList();
+            Rules = vm.Rules.ToList();
         }
 
 		public bool CanChangeRules() {
-			return this.DialogService != null;
+			return DialogService != null;
         }
 
             [Command]
 		public async void RegisterCustomLanguage() {
 
-			if (this.SyntaxEditorService == null) {
+			if (SyntaxEditorService == null) {
 				throw new InvalidOperationException("SyntaxEditorService is not available.");
 			}
 
-			if(this.DialogService == null) {
+			if(DialogService == null) {
 				throw new InvalidOperationException("DialogService is not available.");
             }	
 
@@ -389,15 +389,15 @@ namespace VS
 				Configuration = vm.Configuration
 			};
 
-			this.SyntaxEditorService.RegisterLanguage(myLang);
-			await this.RefreshLanguages();
-			this.Language = vm.LanguageId;
+			SyntaxEditorService.RegisterLanguage(myLang);
+			await RefreshLanguages();
+			Language = vm.LanguageId;
 
-            this.Text = testText;
+            Text = testText;
 		}
 
 		public bool CanRegisterCustomLanguage() {
-			return this.DialogService != null && this.SyntaxEditorService != null;
+			return DialogService != null && SyntaxEditorService != null;
         }
 	}
 }

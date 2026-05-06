@@ -21,7 +21,7 @@ namespace SyntaxEditor.Theming {
         protected override void OnAttached() {
             base.OnAttached();
             LightweightThemeManager.CurrentThemeChanged += LightweightThemeManager_CurrentThemeChanged;
-            this.AssociatedObject.EditorInitialized += AssociatedObject_EditorInitialized;
+            AssociatedObject.EditorInitialized += AssociatedObject_EditorInitialized;
         }
 
 
@@ -94,7 +94,7 @@ namespace SyntaxEditor.Theming {
         void ApplyCurrentTheme() {
             var dxTheme = LightweightThemeManager.CurrentTheme;
             
-            var monacoTheme = CreateFromDXTheme(dxTheme.Name, this.Rules, this.ApplyDevExpressColors);
+            var monacoTheme = CreateFromDXTheme(dxTheme.Name, Rules, ApplyDevExpressColors);
             AdjustDXColors(monacoTheme, dxTheme.Name);
 
             AssociatedObject.RegisterTheme(monacoTheme);
@@ -279,7 +279,7 @@ namespace SyntaxEditor.Theming {
 
         protected override void OnDetaching() {
             if (AssociatedObject != null) {
-                this.AssociatedObject.EditorInitialized -= AssociatedObject_EditorInitialized;
+                AssociatedObject.EditorInitialized -= AssociatedObject_EditorInitialized;
             }
             LightweightThemeManager.CurrentThemeChanged -= LightweightThemeManager_CurrentThemeChanged;
 
