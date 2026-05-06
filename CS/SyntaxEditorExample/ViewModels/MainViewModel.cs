@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 namespace SyntaxEditorExample.ViewModels {
 	public class MainViewModel : ViewModelBase {
 
-		#region Constants
 
 		string MyLangMonarch = @"{
   defaultToken: ""invalid"",
@@ -164,7 +163,6 @@ namespace SyntaxEditorExample.ViewModels {
     return null
 }";
 
-		#endregion Constants
 
 		public MainViewModel() {
 			Text = @"/*

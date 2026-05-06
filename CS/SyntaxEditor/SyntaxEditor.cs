@@ -30,7 +30,6 @@ namespace SyntaxEditor {
         private bool editorReady;
         private bool updatingFromEditor;
 
-        #region Basic Properties and Commands
 
         public string Text {
             get { return (string)GetValue(TextProperty); }
@@ -90,9 +89,6 @@ namespace SyntaxEditor {
             private set => SetValue(IsModifiedPropertyKey, value);
         }
 
-        #endregion Basic Properties and Commands
-
-        #region Options
 
         private static string ToMonacoOption(EditorOption option) => option switch {
             EditorOption.LineNumbers => "lineNumbers",
@@ -146,7 +142,6 @@ namespace SyntaxEditor {
             });
         }
 
-        #region ShowLineNumbers
         public bool ShowLineNumbers {
             get { return (bool)GetValue(ShowLineNumbersProperty); }
             set { SetValue(ShowLineNumbersProperty, value); }
@@ -164,9 +159,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.LineNumbers, show);
         }
 
-        #endregion ShowLineNumbers
-
-        #region ShowMinimap
 
         public bool ShowMinimap {
             get { return (bool)GetValue(ShowMinimapProperty); }
@@ -185,9 +177,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.Minimap, show);
         }
 
-        #endregion ShowMinimap
-
-        #region ShowGlyphMargin
 
         public bool ShowGlyphMargin {
             get { return (bool)GetValue(ShowGlyphMarginProperty); }
@@ -206,9 +195,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.GlyphMargin, show);
         }
 
-        #endregion ShowGlyphMargin
-
-        #region EnableFolding
 
         public bool EnableFolding {
             get { return (bool)GetValue(EnableFoldingProperty); }
@@ -227,9 +213,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.Folding, enabled);
         }
 
-        #endregion EnableFolding
-
-        #region EnableContextMenu
 
         public bool EnableContextMenu {
             get { return (bool)GetValue(EnableContextMenuProperty); }
@@ -248,9 +231,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.ContextMenu, enabled);
         }
 
-        #endregion EnableContextMenu
-
-        #region EnableSmoothScrolling
 
         public bool EnableSmoothScrolling {
             get { return (bool)GetValue(EnableSmoothScrollingProperty); }
@@ -269,9 +249,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.SmoothScrolling, enabled);
         }
 
-        #endregion EnableSmoothScrolling
-
-        #region EnableScrollBeyondLastLine
 
         public bool EnableScrollBeyondLastLine {
             get { return (bool)GetValue(EnableScrollBeyondLastLineProperty); }
@@ -290,9 +267,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.ScrollBeyondLastLine, enabled);
         }
 
-        #endregion EnableScrollBeyondLastLine
-
-        #region ScrollBeyondLastColumn
 
         public int ScrollBeyondLastColumn {
             get { return (int)GetValue(ScrollBeyondLastColumnProperty); }
@@ -311,9 +285,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.ScrollBeyondLastColumn, columns);
         }
 
-        #endregion ScrollBeyondLastColumn
-
-        #region LineNumbersMinChars
 
         public int LineNumbersMinChars {
             get { return (int)GetValue(LineNumbersMinCharsProperty); }
@@ -332,9 +303,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.LineNumbersMinChars, minChars);
         }
 
-        #endregion LineNumbersMinChars
-
-        #region EnableDragAndDrop
 
         public bool EnableDragAndDrop {
             get { return (bool)GetValue(EnableDragAndDropProperty); }
@@ -353,9 +321,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.DragAndDrop, enabled);
         }
 
-        #endregion EnableDragAndDrop
-
-        #region EnableMouseWheelZoom
 
         public bool EnableMouseWheelZoom {
             get { return (bool)GetValue(EnableMouseWheelZoomProperty); }
@@ -374,9 +339,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.MouseWheelZoom, enabled);
         }
 
-        #endregion EnableMouseWheelZoom
-
-        #region WordWrap
 
         public EditorWordWrap WordWrap {
             get { return (EditorWordWrap)GetValue(WordWrapProperty); }
@@ -400,9 +362,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.WordWrap, monacoValue);
         }
 
-        #endregion WordWrap 
-
-        #region EnableStickyScroll
 
         public bool EnableStickyScroll{
             get { return (bool)GetValue(EnableStickyScrollProperty); }
@@ -421,9 +380,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.StickyScroll, new { enabled = enabled });
         }
 
-        #endregion EnableStickyScroll
-
-        #region TabSize
 
         //When DetectIndentation is enabled, Monaco may override TabSize based on the file content.
         public int TabSize {
@@ -450,9 +406,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.TabSize, size);
         }
 
-        #endregion TabSize
-
-        #region DetectIndentation
 
         public bool DetectIndentation {
             get { return (bool)GetValue(DetectIndentationProperty); }
@@ -471,9 +424,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.DetectIndentation, detect);
         }
 
-        #endregion DetectIndentation
-
-        #region InsertSpaces
 
         public bool InsertSpaces {
             get { return (bool)GetValue(InsertSpacesProperty); }
@@ -492,9 +442,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.InsertSpaces, insertSpaces);
         }
 
-        #endregion InsertSpaces
-
-        #region AutoIndent
 
         // autoindent is not updated at runtime. you must to set some properties like TabSize to new value to force editor to use a new value.
         public EditorAutoIndent AutoIndent {
@@ -524,9 +471,6 @@ namespace SyntaxEditor {
             SetTabSize(TabSize); // a worcaround for Monaco resetting TabSize when AutoIndent is changed - we need to reapply it after changing AutoIndent.
         }
 
-        #endregion AutoIndent
-
-        #region EnableQuickSuggestions
 
         public bool EnableQuickSuggestions {
             get { return (bool)GetValue(EnableQuickSuggestionsProperty); }
@@ -545,9 +489,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.EnableQuickSuggestions, enabled);
         }
 
-        #endregion EnableQuickSuggestions
-
-        #region EnableWordBasedSuggestions
 
         public bool EnableWordBasedSuggestions {
             get { return (bool)GetValue(EnableWordBasedSuggestionsProperty); }
@@ -566,9 +507,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.EnableWordBasedSuggestions, value);
         }
 
-        #endregion EnableWordBasedSuggestions
-
-        #region EnableSuggestOnTriggerCharacters
 
         public bool EnableSuggestOnTriggerCharacters {
             get { return (bool)GetValue(EnableSuggestOnTriggerCharactersProperty); }
@@ -586,9 +524,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.EnableSuggestOnTriggerCharacters, enabled);
         }
 
-        #endregion EnableSuggestOnTriggerCharacters
-
-        #region EnableParameterHints
 
         public bool EnableParameterHints {
             get { return (bool)GetValue(EnableParameterHintsProperty); }
@@ -608,9 +543,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.EnableParameterHints, value);
         }
 
-        #endregion EnableParameterHints
-
-        #endregion Options
 
         private void SendCommand(EditorCommandType type, object? payload = null) {
             if (!editorReady)
@@ -627,7 +559,6 @@ namespace SyntaxEditor {
             webView?.CoreWebView2.PostWebMessageAsJson(json);
         }
 
-        #region Theming
 
         public void RegisterTheme(MonacoTheme theme) {
             if (theme == null)
@@ -716,9 +647,6 @@ namespace SyntaxEditor {
             SendCommand(EditorCommandType.SetTheme, themeName);
         }
 
-        #endregion Theming
-
-        #region Processing Monaco Messages
 
         private void CoreWebView2_WebMessageReceived(object? sender, CoreWebView2WebMessageReceivedEventArgs e) {
             if (sender is not CoreWebView2)
@@ -791,9 +719,6 @@ namespace SyntaxEditor {
             }
         }
 
-        #endregion Processing Monaco Messages
-
-        #region Language Support
 
         public string EditorLanguage {
             get { return (string)GetValue(EditorLanguageProperty); }
@@ -871,9 +796,6 @@ namespace SyntaxEditor {
             }
         }
 
-        #endregion Language Support
-
-        #region Initialization and Cleanup
 
         public override void OnApplyTemplate() {
             base.OnApplyTemplate();
@@ -949,7 +871,6 @@ namespace SyntaxEditor {
             }
         }
 
-        #endregion Initialization and Cleanup
 
         private void ApplyCurrentState() {
             RestoreRegisteredLanguages();
