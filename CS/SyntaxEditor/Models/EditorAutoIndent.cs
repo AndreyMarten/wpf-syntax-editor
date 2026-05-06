@@ -1,4 +1,4 @@
-﻿namespace SyntaxEditor.Models {
+namespace SyntaxEditor.Models {
     public enum EditorAutoIndent {
         None,
         Keep,

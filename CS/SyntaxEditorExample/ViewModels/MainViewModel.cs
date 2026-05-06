@@ -164,7 +164,6 @@ namespace SyntaxEditorExample.ViewModels {
     return null
 }";
 
-
 		public MainViewModel() {
 			Text = @"/*
 * C# Program to Display All the Prime Numbers Between 1 to 100
@@ -224,7 +223,7 @@ namespace VS
 
 		[Command]
 		public void OpenFile() {
-			if (OpenFileDialogService.ShowDialog()) {
+			if(OpenFileDialogService.ShowDialog()) {
 				var file = OpenFileDialogService.Files.First();
 				Text = File.ReadAllText(Path.Combine(file.DirectoryName, file.Name));
 			}
@@ -236,7 +235,7 @@ namespace VS
 
 		[Command]
 		public void SaveFile() {
-			if (SaveFileDialogService.ShowDialog()) {
+			if(SaveFileDialogService.ShowDialog()) {
 				var file = SaveFileDialogService.File;
 				File.WriteAllText(Path.Combine(file.DirectoryName, file.Name), Text);
 				SyntaxEditorService.MarkAsSaved();
@@ -248,7 +247,7 @@ namespace VS
 		}
 		public ObservableCollection<string> Languages {
 			get {
-              if (languages == null) {
+              if(languages == null) {
 					languages = new ObservableCollection<string>();
 				}
 
@@ -275,13 +274,13 @@ namespace VS
 		public AsyncCommand RefreshLanguagesCommand { get; private set; }
 
 		async Task RefreshLanguages() {
-			if (SyntaxEditorService == null) {
+			if(SyntaxEditorService == null) {
 				throw new InvalidOperationException("SyntaxEditorService is not available.");
 			}
 
 			Languages.Clear();
 			var result = await SyntaxEditorService.GetLanguagesAsync();
-			if (result != null) {
+			if(result != null) {
 				Languages.AddRange(result);
 			}
 		}
@@ -292,12 +291,12 @@ namespace VS
 		[Command]
 		public void ChangeRules() {
 
-            if (DialogService == null) {
+            if(DialogService == null) {
                 throw new InvalidOperationException("DialogService is not available.");
             }
 
 			var vm = new RulesViewModel();
-            if (Rules != null)
+            if(Rules != null)
                 vm.Rules.AddRange(Rules);
 
             var buttonSave = new UICommand() {
@@ -325,7 +324,7 @@ namespace VS
                 viewModel: vm
             );
 
-            if (result != buttonSave) {
+            if(result != buttonSave) {
                 return;
             }
             //update rules so that theme can apply it.
@@ -339,20 +338,19 @@ namespace VS
             [Command]
 		public async void RegisterCustomLanguage() {
 
-			if (SyntaxEditorService == null) {
+			if(SyntaxEditorService == null) {
 				throw new InvalidOperationException("SyntaxEditorService is not available.");
 			}
 
 			if(DialogService == null) {
 				throw new InvalidOperationException("DialogService is not available.");
-            }	
+            }
 
 			var vm = new CustomLanguageViewModel();
 			vm.Monarch = MyLangMonarch;
 			vm.Configuration = MyLangConfiguration;
 			vm.LanguageId = "MyLang";
-			
-			
+
             var buttonSave = new UICommand() {
                 Id = "save",
                 Caption = "Save",
@@ -360,7 +358,7 @@ namespace VS
 			    IsDefault = true,
                 IsCancel = false
             };
-            
+
             var buttonCancel = new UICommand() {
                 Id = "cancel",
                 Caption = "Cancel",
@@ -378,10 +376,9 @@ namespace VS
                 viewModel: vm
             );
 
-            if (result != buttonSave) {
+            if(result != buttonSave) {
 				return;
             }
-
 
             var myLang = new LanguageDescriptor {
 				Id = vm.LanguageId,

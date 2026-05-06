@@ -25,14 +25,14 @@ namespace SyntaxEditorExample.ViewModels {
 
         public string? this[string columnName] {
             get {
-                if (columnName == nameof(LanguageId)) {
-                    if (string.IsNullOrWhiteSpace(LanguageId))
+                if(columnName == nameof(LanguageId)) {
+                    if(string.IsNullOrWhiteSpace(LanguageId))
                         return "Language Name is required.";
 
-                    if (!LanguageIdRegex.IsMatch(LanguageId))
+                    if(!LanguageIdRegex.IsMatch(LanguageId))
                         return "Language Name may contain only letters, digits, '-' and '_'.";
 
-                    if (LanguageId.Length > 50)
+                    if(LanguageId.Length > 50)
                         return "Language Name is too long.";
                 }
 

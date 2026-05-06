@@ -15,7 +15,7 @@ namespace SyntaxEditorExample.ViewModels {
         protected ObservableCollection<MonacoThemeRule> rules;
         public ObservableCollection<MonacoThemeRule> Rules {
             get {
-                if (rules == null) {
+                if(rules == null) {
                     rules = new ObservableCollection<MonacoThemeRule>();
                 }
 
@@ -34,7 +34,7 @@ namespace SyntaxEditorExample.ViewModels {
         }
 
         void ParseRawJS() {
-            
+
         }
 
         [Command]
@@ -44,7 +44,7 @@ namespace SyntaxEditorExample.ViewModels {
 
         [Command]
         public void ApplyJS() {
-            if (!MonacoRulesParser.TryParse(RawRulesText ?? string.Empty, out var parsed)) {
+            if(!MonacoRulesParser.TryParse(RawRulesText ?? string.Empty, out var parsed)) {
                 MessageBoxService?.ShowMessage(
                     "Failed to parse rules. Please check the format.",
                     "Error",
@@ -58,10 +58,9 @@ namespace SyntaxEditorExample.ViewModels {
             Rules.AddRange(parsed);
         }
 
-
         [Command]
         public void ApplyRulesChanges() {
-            if (IsRawRulesMode) {
+            if(IsRawRulesMode) {
                 ApplyJS();
             } else {
                 ApplyRules();

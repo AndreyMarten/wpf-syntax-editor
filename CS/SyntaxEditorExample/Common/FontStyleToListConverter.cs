@@ -1,4 +1,4 @@
-﻿using SyntaxEditor.Theming;
+using SyntaxEditor.Theming;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -7,11 +7,10 @@ using System.Windows.Data;
 using System.Windows.Markup;
 
 namespace SyntaxEditorExample.Common {
-  
 
     internal class FontStyleToListConverter : MarkupExtension, IValueConverter {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-            if (value == null) {
+            if(value == null) {
                 return value;
             }
 
@@ -25,7 +24,7 @@ namespace SyntaxEditorExample.Common {
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
-            if (value == null) {
+            if(value == null) {
                 return value;
             }
 

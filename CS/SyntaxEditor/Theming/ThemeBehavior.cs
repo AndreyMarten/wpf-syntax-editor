@@ -13,7 +13,7 @@ namespace SyntaxEditor.Theming {
         public static readonly DependencyProperty ApplyDevExpressColorsProperty = DependencyProperty.Register(nameof(ApplyDevExpressColors), typeof(bool), typeof(ThemeBehavior), new PropertyMetadata(true, OnApplyDevExpressColorsChanged));
 
         static ThemeBehavior() {
-            if (!CompatibilitySettings.UseLightweightThemes) {
+            if(!CompatibilitySettings.UseLightweightThemes) {
                 throw new InvalidOperationException("Lightweight themes must be used to use MonacoThemeBehavior.");
             }
         }
@@ -23,7 +23,6 @@ namespace SyntaxEditor.Theming {
             LightweightThemeManager.CurrentThemeChanged += LightweightThemeManager_CurrentThemeChanged;
             AssociatedObject.EditorInitialized += AssociatedObject_EditorInitialized;
         }
-
 
         public IReadOnlyList<MonacoThemeRule>? Rules {
             get => (IReadOnlyList<MonacoThemeRule>?)GetValue(RulesProperty);
@@ -59,7 +58,7 @@ namespace SyntaxEditor.Theming {
 
             bool useSystemColors = ApplicationThemeHelper.ApplicationThemeName.Contains("SystemColors");
 
-            switch (dxTheme) {
+            switch(dxTheme) {
                 case "Win11Light":
                     monacoTheme.Colors[MonacoColorKeys.SelectionBackground] = monacoTheme.Colors[MonacoColorKeys.SelectionBackground].Lighten(0.5);
                     monacoTheme.Colors[MonacoColorKeys.InactiveSelectionBackground] = monacoTheme.Colors[MonacoColorKeys.InactiveSelectionBackground].Lighten(0.5);
@@ -93,7 +92,7 @@ namespace SyntaxEditor.Theming {
 
         void ApplyCurrentTheme() {
             var dxTheme = LightweightThemeManager.CurrentTheme;
-            
+
             var monacoTheme = CreateFromDXTheme(dxTheme.Name, Rules, ApplyDevExpressColors);
             AdjustDXColors(monacoTheme, dxTheme.Name);
 
@@ -105,7 +104,7 @@ namespace SyntaxEditor.Theming {
             var palette = LightweightThemeManager.CurrentTheme.Palette;
             var key = $"Color.{colorKey}";
 
-            if (palette.Contains(key) && palette[key] is Color color) {
+            if(palette.Contains(key) && palette[key] is Color color) {
                 return color;
             }
 
@@ -129,18 +128,18 @@ namespace SyntaxEditor.Theming {
             var result = new Dictionary<string, Color>();
 
             Color? Try(params string[] keys) {
-                foreach (var key in keys) {
+                foreach(var key in keys) {
                     var color = GetColor(key);
-                    if (color.HasValue)
+                    if(color.HasValue)
                         return color;
                 }
-                
+
                 return null;
             }
 
             void Map(string monacoKey, params string[] dxKeys) {
                 var color = Try(dxKeys);
-                if (color.HasValue)
+                if(color.HasValue)
                     result[monacoKey] = color.Value;
             }
 
@@ -175,7 +174,6 @@ namespace SyntaxEditor.Theming {
                 "Accent",
                 "SelectionBackground",
                 "Selection");
-                
 
             Map(MonacoColorKeys.InactiveSelectionBackground,
                 "SelectionBackground",
@@ -264,13 +262,13 @@ namespace SyntaxEditor.Theming {
         }
 
         static MonacoThemeBase ResolveBase(string themeName) {
-            if (string.IsNullOrWhiteSpace(themeName))
+            if(string.IsNullOrWhiteSpace(themeName))
                 return MonacoThemeBase.Light;
 
-            if (themeName.Contains("HighContrast", StringComparison.OrdinalIgnoreCase))
+            if(themeName.Contains("HighContrast", StringComparison.OrdinalIgnoreCase))
                 return MonacoThemeBase.HighContrast;
 
-            if (themeName.Contains("Dark", StringComparison.OrdinalIgnoreCase) ||
+            if(themeName.Contains("Dark", StringComparison.OrdinalIgnoreCase) ||
                 themeName.Contains("Black", StringComparison.OrdinalIgnoreCase))
                 return MonacoThemeBase.Dark;
 
@@ -278,7 +276,7 @@ namespace SyntaxEditor.Theming {
         }
 
         protected override void OnDetaching() {
-            if (AssociatedObject != null) {
+            if(AssociatedObject != null) {
                 AssociatedObject.EditorInitialized -= AssociatedObject_EditorInitialized;
             }
             LightweightThemeManager.CurrentThemeChanged -= LightweightThemeManager_CurrentThemeChanged;
@@ -287,6 +285,5 @@ namespace SyntaxEditor.Theming {
         }
     }
 
-   
 }
 

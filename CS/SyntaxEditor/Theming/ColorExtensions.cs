@@ -16,7 +16,7 @@ namespace SyntaxEditor.Theming {
 
             l = Math.Clamp(l + delta, 0, 1);
 
-            return FromHsl(h, s, l, color.A); 
+            return FromHsl(h, s, l, color.A);
         }
 
         static (double h, double s, double l) ToHsl(Color color) {
@@ -32,17 +32,17 @@ namespace SyntaxEditor.Theming {
             double l = (max + min) / 2;
             double s = 0;
 
-            if (delta != 0) {
+            if(delta != 0) {
                 s = delta / (1 - Math.Abs(2 * l - 1));
 
-                if (max == r)
+                if(max == r)
                     h = 60 * (((g - b) / delta) % 6);
-                else if (max == g)
+                else if(max == g)
                     h = 60 * (((b - r) / delta) + 2);
                 else
                     h = 60 * (((r - g) / delta) + 4);
 
-                if (h < 0)
+                if(h < 0)
                     h += 360;
             }
 
@@ -56,7 +56,7 @@ namespace SyntaxEditor.Theming {
 
             double r1 = 0, g1 = 0, b1 = 0;
 
-            if (h < 60) { r1 = c; g1 = x; } else if (h < 120) { r1 = x; g1 = c; } else if (h < 180) { g1 = c; b1 = x; } else if (h < 240) { g1 = x; b1 = c; } else if (h < 300) { r1 = x; b1 = c; } else { r1 = c; b1 = x; }
+            if(h < 60) { r1 = c; g1 = x; } else if(h < 120) { r1 = x; g1 = c; } else if(h < 180) { g1 = c; b1 = x; } else if(h < 240) { g1 = x; b1 = c; } else if(h < 300) { r1 = x; b1 = c; } else { r1 = c; b1 = x; }
 
             return Color.FromArgb(
                 alpha,

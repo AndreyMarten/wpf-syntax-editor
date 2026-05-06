@@ -1,4 +1,4 @@
-﻿using System.Windows.Controls;
+using System.Windows.Controls;
 
 namespace SyntaxEditorExample {
 public partial class RulesView : UserControl {

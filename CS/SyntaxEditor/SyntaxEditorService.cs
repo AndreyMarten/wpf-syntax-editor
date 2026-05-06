@@ -14,7 +14,7 @@ namespace SyntaxEditor {
 
     public class SyntaxEditorService : ServiceBase, ISyntaxEditorService {
         public async Task<IReadOnlyCollection<string>> GetLanguagesAsync(CancellationToken cancellationToken = default) {
-            if (AssociatedObject is not SyntaxEditor editor)
+            if(AssociatedObject is not SyntaxEditor editor)
                 throw new InvalidOperationException(
                     "SyntaxEditor is not attached.");
 
@@ -28,7 +28,7 @@ namespace SyntaxEditor {
         }
 
         public void RegisterLanguage(LanguageDescriptor language) {
-            if (AssociatedObject is SyntaxEditor editor) {
+            if(AssociatedObject is SyntaxEditor editor) {
                 editor.RegisterLanguage(language);
             }
         }

@@ -88,7 +88,6 @@ namespace SyntaxEditor {
             MarkAsSavedCommand = new DelegateCommand(MarkAsSaved);
         }
 
-
         public string Text {
             get { return (string)GetValue(TextProperty); }
             set { SetValue(TextProperty, value); }
@@ -97,7 +96,7 @@ namespace SyntaxEditor {
         static void OnTextChanged(object sender, DependencyPropertyChangedEventArgs e) {
             var control = (SyntaxEditor)sender;
 
-            if (control.updatingFromEditor)
+            if(control.updatingFromEditor)
                 return;
 
             var text = e.NewValue as string ?? string.Empty;
@@ -133,7 +132,6 @@ namespace SyntaxEditor {
             private set => SetValue(IsModifiedPropertyKey, value);
         }
 
-
         static string ToMonacoOption(EditorOption option) => option switch {
             EditorOption.LineNumbers => "lineNumbers",
             EditorOption.Minimap => "minimap",
@@ -163,14 +161,14 @@ namespace SyntaxEditor {
             var monacoOption = ToMonacoOption(option);
 
             object? monacoValue = null;
-            switch (option) {
+            switch(option) {
                 case EditorOption.LineNumbers:
-                    if (value is not bool show)
+                    if(value is not bool show)
                         throw new ArgumentException("LineNumbers requires boolean value.", nameof(value));
                     monacoValue = show ? "on" : "off";
                     break;
                 case EditorOption.Minimap:
-                    if (value is not bool enabled)
+                    if(value is not bool enabled)
                         throw new ArgumentException("Minimap requires boolean value.", nameof(value));
                     monacoValue = new { enabled };
                     break;
@@ -200,7 +198,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.LineNumbers, show);
         }
 
-
         public bool ShowMinimap {
             get { return (bool)GetValue(ShowMinimapProperty); }
             set { SetValue(ShowMinimapProperty, value); }
@@ -214,7 +211,6 @@ namespace SyntaxEditor {
         void SetShowMinimap(bool show) {
             UpdateOption(EditorOption.Minimap, show);
         }
-
 
         public bool ShowGlyphMargin {
             get { return (bool)GetValue(ShowGlyphMarginProperty); }
@@ -230,7 +226,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.GlyphMargin, show);
         }
 
-
         public bool EnableFolding {
             get { return (bool)GetValue(EnableFoldingProperty); }
             set { SetValue(EnableFoldingProperty, value); }
@@ -244,7 +239,6 @@ namespace SyntaxEditor {
         void SetEnableFolding(bool enabled) {
             UpdateOption(EditorOption.Folding, enabled);
         }
-
 
         public bool EnableContextMenu {
             get { return (bool)GetValue(EnableContextMenuProperty); }
@@ -260,7 +254,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.ContextMenu, enabled);
         }
 
-
         public bool EnableSmoothScrolling {
             get { return (bool)GetValue(EnableSmoothScrollingProperty); }
             set { SetValue(EnableSmoothScrollingProperty, value); }
@@ -274,7 +267,6 @@ namespace SyntaxEditor {
         public void SetEnableSmoothScrolling(bool enabled) {
             UpdateOption(EditorOption.SmoothScrolling, enabled);
         }
-
 
         public bool EnableScrollBeyondLastLine {
             get { return (bool)GetValue(EnableScrollBeyondLastLineProperty); }
@@ -290,7 +282,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.ScrollBeyondLastLine, enabled);
         }
 
-
         public int ScrollBeyondLastColumn {
             get { return (int)GetValue(ScrollBeyondLastColumnProperty); }
             set { SetValue(ScrollBeyondLastColumnProperty, value); }
@@ -304,7 +295,6 @@ namespace SyntaxEditor {
         public void SetScrollBeyondLastColumn(int columns) {
             UpdateOption(EditorOption.ScrollBeyondLastColumn, columns);
         }
-
 
         public int LineNumbersMinChars {
             get { return (int)GetValue(LineNumbersMinCharsProperty); }
@@ -320,7 +310,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.LineNumbersMinChars, minChars);
         }
 
-
         public bool EnableDragAndDrop {
             get { return (bool)GetValue(EnableDragAndDropProperty); }
             set { SetValue(EnableDragAndDropProperty, value); }
@@ -335,7 +324,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.DragAndDrop, enabled);
         }
 
-
         public bool EnableMouseWheelZoom {
             get { return (bool)GetValue(EnableMouseWheelZoomProperty); }
             set { SetValue(EnableMouseWheelZoomProperty, value); }
@@ -349,7 +337,6 @@ namespace SyntaxEditor {
         void SetEnableMouseWheelZoom(bool enabled) {
             UpdateOption(EditorOption.MouseWheelZoom, enabled);
         }
-
 
         public EditorWordWrap WordWrap {
             get { return (EditorWordWrap)GetValue(WordWrapProperty); }
@@ -370,7 +357,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.WordWrap, monacoValue);
         }
 
-
         public bool EnableStickyScroll{
             get { return (bool)GetValue(EnableStickyScrollProperty); }
             set { SetValue(EnableStickyScrollProperty, value); }
@@ -385,7 +371,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.StickyScroll, new { enabled = enabled });
         }
 
-
         //When DetectIndentation is enabled, Monaco may override TabSize based on the file content.
         public int TabSize {
             get { return (int)GetValue(TabSizeProperty); }
@@ -393,7 +378,7 @@ namespace SyntaxEditor {
         }
 
         static bool ValidateTabSize(object value) {
-            if (value is int i)
+            if(value is int i)
                 return i > 0 && i <= 64;
 
             return false;
@@ -407,7 +392,6 @@ namespace SyntaxEditor {
         public void SetTabSize(int size) {
             UpdateOption(EditorOption.TabSize, size);
         }
-
 
         public bool DetectIndentation {
             get { return (bool)GetValue(DetectIndentationProperty); }
@@ -423,7 +407,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.DetectIndentation, detect);
         }
 
-
         public bool InsertSpaces {
             get { return (bool)GetValue(InsertSpacesProperty); }
             set { SetValue(InsertSpacesProperty, value); }
@@ -437,7 +420,6 @@ namespace SyntaxEditor {
         void SetInsertSpaces(bool insertSpaces) {
             UpdateOption(EditorOption.InsertSpaces, insertSpaces);
         }
-
 
         // autoindent is not updated at runtime. you must to set some properties like TabSize to new value to force editor to use a new value.
         public EditorAutoIndent AutoIndent {
@@ -464,7 +446,6 @@ namespace SyntaxEditor {
             SetTabSize(TabSize); // a worcaround for Monaco resetting TabSize when AutoIndent is changed - we need to reapply it after changing AutoIndent.
         }
 
-
         public bool EnableQuickSuggestions {
             get { return (bool)GetValue(EnableQuickSuggestionsProperty); }
             set { SetValue(EnableQuickSuggestionsProperty, value); }
@@ -478,7 +459,6 @@ namespace SyntaxEditor {
         void SetEnableQuickSuggestions(bool enabled) {
             UpdateOption(EditorOption.EnableQuickSuggestions, enabled);
         }
-
 
         public bool EnableWordBasedSuggestions {
             get { return (bool)GetValue(EnableWordBasedSuggestionsProperty); }
@@ -494,7 +474,6 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.EnableWordBasedSuggestions, value);
         }
 
-
         public bool EnableSuggestOnTriggerCharacters {
             get { return (bool)GetValue(EnableSuggestOnTriggerCharactersProperty); }
             set { SetValue(EnableSuggestOnTriggerCharactersProperty, value); }
@@ -507,7 +486,6 @@ namespace SyntaxEditor {
         void SetEnableSuggestOnTriggerCharacters(bool enabled) {
             UpdateOption(EditorOption.EnableSuggestOnTriggerCharacters, enabled);
         }
-
 
         public bool EnableParameterHints {
             get { return (bool)GetValue(EnableParameterHintsProperty); }
@@ -524,9 +502,8 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.EnableParameterHints, value);
         }
 
-
         void SendCommand(EditorCommandType type, object? payload = null) {
-            if (!editorReady)
+            if(!editorReady)
                 return;
 
             var cmd = new EditorCommand {
@@ -540,9 +517,8 @@ namespace SyntaxEditor {
             webView?.CoreWebView2.PostWebMessageAsJson(json);
         }
 
-
         public void RegisterTheme(MonacoTheme theme) {
-            if (theme == null)
+            if(theme == null)
                 throw new ArgumentNullException(nameof(theme));
 
             var payload = new {
@@ -564,35 +540,35 @@ namespace SyntaxEditor {
                 ["token"] = r.Token
             };
 
-            if (r.Foreground is Color fg)
+            if(r.Foreground is Color fg)
                 rule["foreground"] = ToHex(fg, false);
 
-            if (r.Background is Color bg)
+            if(r.Background is Color bg)
                 rule["background"] = ToHex(bg, false);
 
             var fontStyle = ConvertFontStyle(r.FontStyle ?? MonacoFontStyle.None);
-            if (!string.IsNullOrEmpty(fontStyle))
+            if(!string.IsNullOrEmpty(fontStyle))
                 rule["fontStyle"] = fontStyle;
 
             return rule.Count > 1 ? rule : null;
         }
 
         static string? ConvertFontStyle(MonacoFontStyle style) {
-            if (style == MonacoFontStyle.None)
+            if(style == MonacoFontStyle.None)
                 return null;
 
-            var sb = new StringBuilder(32); 
+            var sb = new StringBuilder(32);
 
-            if ((style & MonacoFontStyle.Bold) != 0)
+            if((style & MonacoFontStyle.Bold) != 0)
                 sb.Append("bold ");
 
-            if ((style & MonacoFontStyle.Italic) != 0)
+            if((style & MonacoFontStyle.Italic) != 0)
                 sb.Append("italic ");
 
-            if ((style & MonacoFontStyle.Underline) != 0)
+            if((style & MonacoFontStyle.Underline) != 0)
                 sb.Append("underline ");
 
-            if (sb.Length == 0)
+            if(sb.Length == 0)
                 return null;
 
             sb.Length--;
@@ -620,14 +596,13 @@ namespace SyntaxEditor {
         }
 
         void SetTheme(string themeName) {
-            if (string.IsNullOrWhiteSpace(themeName))
+            if(string.IsNullOrWhiteSpace(themeName))
                 return;
             SendCommand(EditorCommandType.SetTheme, themeName);
         }
 
-
         void CoreWebView2_WebMessageReceived(object? sender, CoreWebView2WebMessageReceivedEventArgs e) {
-            if (sender is not CoreWebView2)
+            if(sender is not CoreWebView2)
                 return;
 
             EditorMessage? message;
@@ -635,13 +610,13 @@ namespace SyntaxEditor {
             try {
                 message = JsonSerializer.Deserialize<EditorMessage>(e.WebMessageAsJson, JsonSerializerOptions.Web);
             } catch {
-                return; 
+                return;
             }
 
-            if (message?.Type == null)
+            if(message?.Type == null)
                 return;
 
-            switch (message.Type) {
+            switch(message.Type) {
                 case EditorMessageType.TextChanged:
                     HandleTextChanged(message.Payload.GetString() ?? string.Empty);
                     break;
@@ -676,7 +651,7 @@ namespace SyntaxEditor {
         }
 
         void HandleEditorReady() {
-            if (editorReady)
+            if(editorReady)
                 return;
 
             editorReady = true;
@@ -689,7 +664,7 @@ namespace SyntaxEditor {
         // This method raises the EditorInitialized event on the UI thread,
         // ensuring that any subscribers can safely interact with the editor control when they receive the event.
         void RaiseEditorInitialized() {
-            if (Dispatcher.CheckAccess()) {
+            if(Dispatcher.CheckAccess()) {
                 EditorInitialized?.Invoke(this, EventArgs.Empty);
             } else {
                 Dispatcher.Invoke(() =>
@@ -697,14 +672,13 @@ namespace SyntaxEditor {
             }
         }
 
-
         public string EditorLanguage {
             get { return (string)GetValue(EditorLanguageProperty); }
             set { SetValue(EditorLanguageProperty, value); }
         }
 
         static void OnEditorLanguageChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            if (Equals(e.OldValue, e.NewValue))
+            if(Equals(e.OldValue, e.NewValue))
                 return;
 
             var control = (SyntaxEditor)sender;
@@ -712,14 +686,14 @@ namespace SyntaxEditor {
         }
 
         void SetEditorLanguage(string language) {
-            if (string.IsNullOrWhiteSpace(language))
+            if(string.IsNullOrWhiteSpace(language))
                 return;
 
             SendCommand(EditorCommandType.SetLanguage, language);
         }
 
         public async Task<IReadOnlyList<string>> GetAvailableLanguagesAsync(CancellationToken cancellationToken = default) {
-            
+
             var tcs = new TaskCompletionSource<IReadOnlyList<string>>(TaskCreationOptions.RunContinuationsAsynchronously);
 
             void Handler(object? s, IReadOnlyList<string> langs) {
@@ -732,7 +706,7 @@ namespace SyntaxEditor {
             using var timeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
             using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, timeoutCts.Token);
 
-            using (linkedCts.Token.Register(() => {
+            using(linkedCts.Token.Register(() => {
                 LanguagesReceivedInternal -= Handler;
                 tcs.TrySetCanceled(linkedCts.Token);
             })) {
@@ -747,7 +721,7 @@ namespace SyntaxEditor {
 
         // Language must contain Monarch and Configuration strings identical to how it is used in Monaco - JS object.
         public void RegisterLanguage(LanguageDescriptor language) {
-            if (language == null)
+            if(language == null)
                 throw new ArgumentNullException(nameof(language));
 
             var payload = new {
@@ -760,21 +734,20 @@ namespace SyntaxEditor {
         }
 
         void RestoreRegisteredLanguages() {
-            foreach (var language in registeredLanguages.Values) {
+            foreach(var language in registeredLanguages.Values) {
                 RegisterLanguage(language);
             }
         }
-
 
         public override void OnApplyTemplate() {
             base.OnApplyTemplate();
 
             var newWebView = GetTemplateChild("PART_WebView") as WebView2;
 
-            if (newWebView == null)
+            if(newWebView == null)
                 throw new InvalidOperationException("PART_WebView not found.");
 
-            if (webView == newWebView)
+            if(webView == newWebView)
                 return;
 
             DetachWebView();
@@ -790,12 +763,12 @@ namespace SyntaxEditor {
 
         async Task InitializeAsync() {
             var currentWebView = webView;
-            if (currentWebView == null)
+            if(currentWebView == null)
                 return;
 
             await currentWebView.EnsureCoreWebView2Async();
 
-            if (webView != currentWebView)
+            if(webView != currentWebView)
                 return;
 
             currentWebView.CoreWebView2.WebMessageReceived -= CoreWebView2_WebMessageReceived;
@@ -805,7 +778,7 @@ namespace SyntaxEditor {
 
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Monaco", "index.html");
 
-            if (!File.Exists(path))
+            if(!File.Exists(path))
                 throw new FileNotFoundException(path);
 
             currentWebView.Source = new Uri(path);
@@ -823,7 +796,7 @@ namespace SyntaxEditor {
         }
 
         public void Dispose() {
-            if (disposed)
+            if(disposed)
                 return;
 
             DisposeWebView();
@@ -832,12 +805,11 @@ namespace SyntaxEditor {
 
         public void DetachWebView() {
             var currentWebView = webView;
-            if (currentWebView?.CoreWebView2 != null) {
+            if(currentWebView?.CoreWebView2 != null) {
                 currentWebView.CoreWebView2.WebMessageReceived -= CoreWebView2_WebMessageReceived;
                 currentWebView.CoreWebView2.ContextMenuRequested -= CoreWebView2_ContextMenuRequested;
             }
         }
-
 
         void ApplyCurrentState() {
             RestoreRegisteredLanguages();
