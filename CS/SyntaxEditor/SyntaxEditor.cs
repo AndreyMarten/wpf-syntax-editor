@@ -1,4 +1,4 @@
-﻿using DevExpress.Mvvm;
+using DevExpress.Mvvm;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
 using SyntaxEditor.Models;
@@ -26,9 +26,9 @@ namespace SyntaxEditor {
             MarkAsSavedCommand = new DelegateCommand(MarkAsSaved);
         }
 
-        private WebView2? webView;
-        private bool editorReady;
-        private bool updatingFromEditor;
+        WebView2? webView;
+        bool editorReady;
+        bool updatingFromEditor;
 
 
         public string Text {
@@ -40,7 +40,7 @@ namespace SyntaxEditor {
             DependencyProperty.Register(nameof(Text), typeof(string), typeof(SyntaxEditor), new FrameworkPropertyMetadata(string.Empty,
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnTextChanged));
 
-        private static void OnTextChanged(object sender, DependencyPropertyChangedEventArgs e) {
+        static void OnTextChanged(object sender, DependencyPropertyChangedEventArgs e) {
             var control = (SyntaxEditor)sender;
 
             if (control.updatingFromEditor)
@@ -50,7 +50,7 @@ namespace SyntaxEditor {
             control.SetEditorText(text);
         }
 
-        private void SetEditorText(string text) {
+        void SetEditorText(string text) {
             this.SendCommand(EditorCommandType.SetText, text);
         }
 
@@ -68,12 +68,12 @@ namespace SyntaxEditor {
         public static readonly DependencyProperty ReadOnlyProperty =
             DependencyProperty.Register(nameof(ReadOnly), typeof(bool), typeof(SyntaxEditor), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnReadOnlyChanged));
 
-        private static void OnReadOnlyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+        static void OnReadOnlyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var control = (SyntaxEditor)sender;
             control.SetEditorReadOnly((bool)e.NewValue);
         }
 
-        private void SetEditorReadOnly(bool readOnly) {
+        void SetEditorReadOnly(bool readOnly) {
             this.SendCommand(EditorCommandType.SetReadOnly, readOnly);
         }
 
@@ -90,7 +90,7 @@ namespace SyntaxEditor {
         }
 
 
-        private static string ToMonacoOption(EditorOption option) => option switch {
+        static string ToMonacoOption(EditorOption option) => option switch {
             EditorOption.LineNumbers => "lineNumbers",
             EditorOption.Minimap => "minimap",
             EditorOption.GlyphMargin => "glyphMargin",
@@ -115,7 +115,7 @@ namespace SyntaxEditor {
             _ => throw new ArgumentOutOfRangeException(nameof(option))
         };
 
-        private void UpdateOption(EditorOption option, object? value) {
+        void UpdateOption(EditorOption option, object? value) {
             var monacoOption = ToMonacoOption(option);
 
             object? monacoValue = null;
@@ -150,12 +150,12 @@ namespace SyntaxEditor {
         public static readonly DependencyProperty ShowLineNumbersProperty =
             DependencyProperty.Register(nameof(ShowLineNumbers), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnShowLineNumbersChanged));
 
-        private static void OnShowLineNumbersChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+        static void OnShowLineNumbersChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var control = (SyntaxEditor)sender;
             control.SetShowLineNumbers((bool)e.NewValue);
         }
 
-        private void SetShowLineNumbers(bool show) {
+        void SetShowLineNumbers(bool show) {
             UpdateOption(EditorOption.LineNumbers, show);
         }
 
@@ -168,12 +168,12 @@ namespace SyntaxEditor {
         public static readonly DependencyProperty ShowMinimapProperty =
             DependencyProperty.Register(nameof(ShowMinimap), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(false, OnShowMinimapChanged));
 
-        private static void OnShowMinimapChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+        static void OnShowMinimapChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var control = (SyntaxEditor)sender;
             control.SetShowMinimap((bool)e.NewValue);
         }
 
-        private void SetShowMinimap(bool show) {
+        void SetShowMinimap(bool show) {
             UpdateOption(EditorOption.Minimap, show);
         }
 
@@ -186,12 +186,12 @@ namespace SyntaxEditor {
         public static readonly DependencyProperty ShowGlyphMarginProperty =
             DependencyProperty.Register(nameof(ShowGlyphMargin), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(false, OnShowGlyphMarginChanged));
 
-        private static void OnShowGlyphMarginChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+        static void OnShowGlyphMarginChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var control = (SyntaxEditor)sender;
             control.SetShowGlyphMargin((bool)e.NewValue);
         }
 
-        private void SetShowGlyphMargin(bool show) {
+        void SetShowGlyphMargin(bool show) {
             UpdateOption(EditorOption.GlyphMargin, show);
         }
 
@@ -204,12 +204,12 @@ namespace SyntaxEditor {
         public static readonly DependencyProperty EnableFoldingProperty =
             DependencyProperty.Register(nameof(EnableFolding), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnEnableFoldingChanged));
 
-        private static void OnEnableFoldingChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+        static void OnEnableFoldingChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var control = (SyntaxEditor)sender;
             control.SetEnableFolding((bool)e.NewValue);
         }
 
-        private void SetEnableFolding(bool enabled) {
+        void SetEnableFolding(bool enabled) {
             UpdateOption(EditorOption.Folding, enabled);
         }
 
@@ -222,7 +222,7 @@ namespace SyntaxEditor {
         public static readonly DependencyProperty EnableContextMenuProperty =
             DependencyProperty.Register(nameof(EnableContextMenu), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnEnableContextMenuChanged));
 
-        private static void OnEnableContextMenuChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+        static void OnEnableContextMenuChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var control = (SyntaxEditor)sender;
             control.SetEnableContextMenu((bool)e.NewValue);
         }
@@ -240,7 +240,7 @@ namespace SyntaxEditor {
         public static readonly DependencyProperty EnableSmoothScrollingProperty =
             DependencyProperty.Register(nameof(EnableSmoothScrolling), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(false, OnEnableSmoothScrollingChanged));
 
-        private static void OnEnableSmoothScrollingChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+        static void OnEnableSmoothScrollingChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var control = (SyntaxEditor)sender;
             control.SetEnableSmoothScrolling((bool)e.NewValue);
         }
@@ -258,12 +258,12 @@ namespace SyntaxEditor {
         public static readonly DependencyProperty EnableScrollBeyondLastLineProperty =
             DependencyProperty.Register(nameof(EnableScrollBeyondLastLine), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnEnableScrollBeyondLastLineChanged));
 
-        private static void OnEnableScrollBeyondLastLineChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+        static void OnEnableScrollBeyondLastLineChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var control = (SyntaxEditor)sender;
             control.SetEnableScrollBeyondLastLine((bool)e.NewValue);
         }
 
-        private void SetEnableScrollBeyondLastLine(bool enabled) {
+        void SetEnableScrollBeyondLastLine(bool enabled) {
             UpdateOption(EditorOption.ScrollBeyondLastLine, enabled);
         }
 
@@ -276,7 +276,7 @@ namespace SyntaxEditor {
         public static readonly DependencyProperty ScrollBeyondLastColumnProperty =
             DependencyProperty.Register(nameof(ScrollBeyondLastColumn), typeof(int), typeof(SyntaxEditor), new PropertyMetadata(5, ScrollBeyondLastColumnChanged));
 
-        private static void ScrollBeyondLastColumnChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+        static void ScrollBeyondLastColumnChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var control = (SyntaxEditor)sender;
             control.SetScrollBeyondLastColumn((int)e.NewValue);
         }
@@ -294,12 +294,12 @@ namespace SyntaxEditor {
         public static readonly DependencyProperty LineNumbersMinCharsProperty =
             DependencyProperty.Register(nameof(LineNumbersMinChars), typeof(int), typeof(SyntaxEditor), new PropertyMetadata(5, OnLineNumbersMinCharsChanged));
 
-        private static void OnLineNumbersMinCharsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+        static void OnLineNumbersMinCharsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var control = (SyntaxEditor)sender;
             control.SetLineNumbersMinChars((int)e.NewValue);
         }
 
-        private void SetLineNumbersMinChars(int minChars) {
+        void SetLineNumbersMinChars(int minChars) {
             UpdateOption(EditorOption.LineNumbersMinChars, minChars);
         }
 
@@ -312,12 +312,12 @@ namespace SyntaxEditor {
         public static readonly DependencyProperty EnableDragAndDropProperty =
             DependencyProperty.Register(nameof(EnableDragAndDrop), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnEnableDragAndDropChanged));
 
-        private static void OnEnableDragAndDropChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+        static void OnEnableDragAndDropChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var control = (SyntaxEditor)sender;
             control.SetEnableDragAndDrop((bool)e.NewValue);
         }
 
-        private void SetEnableDragAndDrop(bool enabled) {
+        void SetEnableDragAndDrop(bool enabled) {
             UpdateOption(EditorOption.DragAndDrop, enabled);
         }
 
@@ -330,12 +330,12 @@ namespace SyntaxEditor {
         public static readonly DependencyProperty EnableMouseWheelZoomProperty =
             DependencyProperty.Register(nameof(EnableMouseWheelZoom), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(false, EnableMouseWheelZoomChanged));
 
-        private static void EnableMouseWheelZoomChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+        static void EnableMouseWheelZoomChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var control = (SyntaxEditor)sender;
             control.SetEnableMouseWheelZoom((bool)e.NewValue);
         }
 
-        private void SetEnableMouseWheelZoom(bool enabled) {
+        void SetEnableMouseWheelZoom(bool enabled) {
             UpdateOption(EditorOption.MouseWheelZoom, enabled);
         }
 
@@ -348,12 +348,12 @@ namespace SyntaxEditor {
         public static readonly DependencyProperty WordWrapProperty =
             DependencyProperty.Register(nameof(WordWrap), typeof(EditorWordWrap), typeof(SyntaxEditor), new PropertyMetadata(EditorWordWrap.Off, WordWrapChanged));
 
-        private static void WordWrapChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+        static void WordWrapChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var control = (SyntaxEditor)sender;
             control.SetWordWrap((EditorWordWrap)e.NewValue);
         }
 
-        private void SetWordWrap(EditorWordWrap wordWrap) {
+        void SetWordWrap(EditorWordWrap wordWrap) {
             string monacoValue = wordWrap switch {
                 EditorWordWrap.Off => "off",
                 EditorWordWrap.On => "on",
@@ -371,12 +371,12 @@ namespace SyntaxEditor {
         public static readonly DependencyProperty EnableStickyScrollProperty =
             DependencyProperty.Register(nameof(EnableStickyScroll), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnEnableStickyScrollChanged));
 
-        private static void OnEnableStickyScrollChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+        static void OnEnableStickyScrollChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var control = (SyntaxEditor)sender;
             control.SetEnableStickyScroll((bool)e.NewValue);
         }
 
-        private void SetEnableStickyScroll(bool enabled) {
+        void SetEnableStickyScroll(bool enabled) {
             UpdateOption(EditorOption.StickyScroll, new { enabled = enabled });
         }
 
@@ -390,14 +390,14 @@ namespace SyntaxEditor {
         public static readonly DependencyProperty TabSizeProperty =
             DependencyProperty.Register(nameof(TabSize), typeof(int), typeof(SyntaxEditor), new PropertyMetadata(4, OnTabSizeChanged), ValidateTabSize);
 
-        private static bool ValidateTabSize(object value) {
+        static bool ValidateTabSize(object value) {
             if (value is int i)
                 return i > 0 && i <= 64;
 
             return false;
         }
 
-        private static void OnTabSizeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+        static void OnTabSizeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var control = (SyntaxEditor)sender;
             control.SetTabSize((int)e.NewValue);
         }
@@ -415,12 +415,12 @@ namespace SyntaxEditor {
         public static readonly DependencyProperty DetectIndentationProperty =
             DependencyProperty.Register(nameof(DetectIndentation), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnDetectIndentationChanged));
 
-        private static void OnDetectIndentationChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+        static void OnDetectIndentationChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var control = (SyntaxEditor)sender;
             control.SetDetectIndentation((bool)e.NewValue);
         }
 
-        private void SetDetectIndentation(bool detect) {
+        void SetDetectIndentation(bool detect) {
             UpdateOption(EditorOption.DetectIndentation, detect);
         }
 
@@ -433,12 +433,12 @@ namespace SyntaxEditor {
         public static readonly DependencyProperty InsertSpacesProperty =
             DependencyProperty.Register(nameof(InsertSpaces), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnInsertSpacesChanged));
 
-        private static void OnInsertSpacesChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+        static void OnInsertSpacesChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var control = (SyntaxEditor)sender;
             control.SetInsertSpaces((bool)e.NewValue);
         }
 
-        private void SetInsertSpaces(bool insertSpaces) {
+        void SetInsertSpaces(bool insertSpaces) {
             UpdateOption(EditorOption.InsertSpaces, insertSpaces);
         }
 
@@ -452,12 +452,12 @@ namespace SyntaxEditor {
         public static readonly DependencyProperty AutoIndentProperty =
             DependencyProperty.Register(nameof(AutoIndent), typeof(EditorAutoIndent), typeof(SyntaxEditor), new PropertyMetadata(EditorAutoIndent.Full, AutoIndentChanged));
 
-        private static void AutoIndentChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+        static void AutoIndentChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var control = (SyntaxEditor)sender;
             control.SetAutoIndent((EditorAutoIndent)e.NewValue);
         }
 
-        private void SetAutoIndent(EditorAutoIndent autoIndent) {
+        void SetAutoIndent(EditorAutoIndent autoIndent) {
             string monacoValue = autoIndent switch {
                 EditorAutoIndent.None => "none",
                 EditorAutoIndent.Keep => "keep",
@@ -480,12 +480,12 @@ namespace SyntaxEditor {
         public static readonly DependencyProperty EnableQuickSuggestionsProperty =
             DependencyProperty.Register(nameof(EnableQuickSuggestions), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnEnableQuickSuggestionsChanged));
 
-        private static void OnEnableQuickSuggestionsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+        static void OnEnableQuickSuggestionsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var control = (SyntaxEditor)sender;
             control.SetEnableQuickSuggestions((bool)e.NewValue);
         }
 
-        private void SetEnableQuickSuggestions(bool enabled) {
+        void SetEnableQuickSuggestions(bool enabled) {
             UpdateOption(EditorOption.EnableQuickSuggestions, enabled);
         }
 
@@ -498,11 +498,11 @@ namespace SyntaxEditor {
         public static readonly DependencyProperty EnableWordBasedSuggestionsProperty =
             DependencyProperty.Register(nameof(EnableWordBasedSuggestions), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnEnableWordBasedSuggestionsChanged));
 
-        private static void OnEnableWordBasedSuggestionsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+        static void OnEnableWordBasedSuggestionsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var control = (SyntaxEditor)sender;
             control.SetEnableWordBasedSuggestions((bool)e.NewValue);
         }
-        private void SetEnableWordBasedSuggestions(bool enabled) {
+        void SetEnableWordBasedSuggestions(bool enabled) {
             var value = enabled ? "currentDocument" : "off";
             UpdateOption(EditorOption.EnableWordBasedSuggestions, value);
         }
@@ -515,12 +515,12 @@ namespace SyntaxEditor {
         public static readonly DependencyProperty EnableSuggestOnTriggerCharactersProperty =
             DependencyProperty.Register(nameof(EnableSuggestOnTriggerCharacters), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnEnableSuggestOnTriggerCharactersChanged));
 
-        private static void OnEnableSuggestOnTriggerCharactersChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+        static void OnEnableSuggestOnTriggerCharactersChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var control = (SyntaxEditor)sender;
             control.SetEnableSuggestOnTriggerCharacters((bool)e.NewValue);
         }
 
-        private void SetEnableSuggestOnTriggerCharacters(bool enabled) {
+        void SetEnableSuggestOnTriggerCharacters(bool enabled) {
             UpdateOption(EditorOption.EnableSuggestOnTriggerCharacters, enabled);
         }
 
@@ -533,18 +533,18 @@ namespace SyntaxEditor {
         public static readonly DependencyProperty EnableParameterHintsProperty =
             DependencyProperty.Register(nameof(EnableParameterHints), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnEnableParameterHintsChanged));
 
-        private static void OnEnableParameterHintsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+        static void OnEnableParameterHintsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var control = (SyntaxEditor)sender;
             control.SetEnableParameterHints((bool)e.NewValue);
         }
 
-        private void SetEnableParameterHints(bool enabled) {
+        void SetEnableParameterHints(bool enabled) {
             var value = new { enabled };
             UpdateOption(EditorOption.EnableParameterHints, value);
         }
 
 
-        private void SendCommand(EditorCommandType type, object? payload = null) {
+        void SendCommand(EditorCommandType type, object? payload = null) {
             if (!editorReady)
                 return;
 
@@ -578,7 +578,7 @@ namespace SyntaxEditor {
             SendCommand(EditorCommandType.RegisterTheme, payload);
         }
 
-        private static Dictionary<string, object>? ConvertRule(MonacoThemeRule r) {
+        static Dictionary<string, object>? ConvertRule(MonacoThemeRule r) {
             var rule = new Dictionary<string, object> {
                 ["token"] = r.Token
             };
@@ -596,7 +596,7 @@ namespace SyntaxEditor {
             return rule.Count > 1 ? rule : null;
         }
 
-        private static string? ConvertFontStyle(MonacoFontStyle style) {
+        static string? ConvertFontStyle(MonacoFontStyle style) {
             if (style == MonacoFontStyle.None)
                 return null;
 
@@ -618,14 +618,14 @@ namespace SyntaxEditor {
             return sb.ToString();
         }
 
-        private static string MapBase(MonacoThemeBase value) => value switch {
+        static string MapBase(MonacoThemeBase value) => value switch {
             MonacoThemeBase.Light => "vs",
             MonacoThemeBase.Dark => "vs-dark",
             MonacoThemeBase.HighContrast => "hc-black",
             _ => throw new ArgumentOutOfRangeException()
         };
 
-        private static string ToHex(Color c, bool addHashTag = true)
+        static string ToHex(Color c, bool addHashTag = true)
             => $"{(addHashTag ? "#" : string.Empty)}{c.R:X2}{c.G:X2}{c.B:X2}".ToLower();
 
         public string ThemeName {
@@ -636,19 +636,19 @@ namespace SyntaxEditor {
         public static readonly DependencyProperty ThemeNameProperty =
             DependencyProperty.Register(nameof(ThemeName), typeof(string), typeof(SyntaxEditor), new PropertyMetadata("vs", OnThemeNameChanged));
 
-        private static void OnThemeNameChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+        static void OnThemeNameChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var control = (SyntaxEditor)sender;
             control.SetTheme((string)e.NewValue);
         }
 
-        private void SetTheme(string themeName) {
+        void SetTheme(string themeName) {
             if (string.IsNullOrWhiteSpace(themeName))
                 return;
             SendCommand(EditorCommandType.SetTheme, themeName);
         }
 
 
-        private void CoreWebView2_WebMessageReceived(object? sender, CoreWebView2WebMessageReceivedEventArgs e) {
+        void CoreWebView2_WebMessageReceived(object? sender, CoreWebView2WebMessageReceivedEventArgs e) {
             if (sender is not CoreWebView2)
                 return;
 
@@ -686,7 +686,7 @@ namespace SyntaxEditor {
             }
         }
 
-        private void HandleTextChanged(string text) {
+        void HandleTextChanged(string text) {
 
             updatingFromEditor = true;
 
@@ -697,7 +697,7 @@ namespace SyntaxEditor {
             }
         }
 
-        private void HandleEditorReady() {
+        void HandleEditorReady() {
             if (editorReady)
                 return;
 
@@ -710,7 +710,7 @@ namespace SyntaxEditor {
 
         // This method raises the EditorInitialized event on the UI thread,
         // ensuring that any subscribers can safely interact with the editor control when they receive the event.
-        private void RaiseEditorInitialized() {
+        void RaiseEditorInitialized() {
             if (Dispatcher.CheckAccess()) {
                 EditorInitialized?.Invoke(this, EventArgs.Empty);
             } else {
@@ -728,7 +728,7 @@ namespace SyntaxEditor {
         public static readonly DependencyProperty EditorLanguageProperty =
             DependencyProperty.Register(nameof(EditorLanguage), typeof(string), typeof(SyntaxEditor), new FrameworkPropertyMetadata("csharp", OnEditorLanguageChanged));
 
-        private static void OnEditorLanguageChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+        static void OnEditorLanguageChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             if (Equals(e.OldValue, e.NewValue))
                 return;
 
@@ -736,14 +736,14 @@ namespace SyntaxEditor {
             control.SetEditorLanguage((string)e.NewValue);
         }
 
-        private void SetEditorLanguage(string language) {
+        void SetEditorLanguage(string language) {
             if (string.IsNullOrWhiteSpace(language))
                 return;
 
             this.SendCommand(EditorCommandType.SetLanguage, language);
         }
 
-        private event EventHandler<IReadOnlyList<string>>? LanguagesReceivedInternal;
+        event EventHandler<IReadOnlyList<string>>? LanguagesReceivedInternal;
 
         public async Task<IReadOnlyList<string>> GetAvailableLanguagesAsync(CancellationToken cancellationToken = default) {
             
@@ -774,7 +774,7 @@ namespace SyntaxEditor {
 
         // Cache for registered languages, to restore when webview2 is recreated.
         // Note: This is a simple cache and does not handle updates to existing languages or removal of languages.
-        private readonly Dictionary<string, LanguageDescriptor> registeredLanguages = new();
+        readonly Dictionary<string, LanguageDescriptor> registeredLanguages = new();
 
         // Language must contain Monarch and Configuration strings identical to how it is used in Monaco - JS object.
         public void RegisterLanguage(LanguageDescriptor language) {
@@ -790,7 +790,7 @@ namespace SyntaxEditor {
             registeredLanguages[language.Id] = language;
         }
 
-        private void RestoreRegisteredLanguages() {
+        void RestoreRegisteredLanguages() {
             foreach (var language in registeredLanguages.Values) {
                 RegisterLanguage(language);
             }
@@ -813,13 +813,13 @@ namespace SyntaxEditor {
             AttachWebView(newWebView);
         }
 
-        private void AttachWebView(WebView2 webView) {
+        void AttachWebView(WebView2 webView) {
             this.webView = webView;
             editorReady = false;
             _ = InitializeAsync();
         }
 
-        private async Task InitializeAsync() {
+        async Task InitializeAsync() {
             var webView = this.webView;
             if (webView == null)
                 return;
@@ -842,18 +842,18 @@ namespace SyntaxEditor {
             webView.Source = new Uri(path);
         }
 
-        private void CoreWebView2_ContextMenuRequested(object? sender, CoreWebView2ContextMenuRequestedEventArgs e) {
+        void CoreWebView2_ContextMenuRequested(object? sender, CoreWebView2ContextMenuRequestedEventArgs e) {
             e.Handled = true;
         }
 
-        private void DisposeWebView() {
+        void DisposeWebView() {
             DetachWebView();
             webView?.Dispose();
             webView = null;
             editorReady = false;
         }
 
-        private bool disposed;
+        bool disposed;
 
         public void Dispose() {
             if (disposed)
@@ -872,7 +872,7 @@ namespace SyntaxEditor {
         }
 
 
-        private void ApplyCurrentState() {
+        void ApplyCurrentState() {
             RestoreRegisteredLanguages();
 
             SetEditorLanguage(EditorLanguage);
@@ -903,3 +903,4 @@ namespace SyntaxEditor {
         }
     }
 }
+

@@ -1,4 +1,4 @@
-﻿using DevExpress.Mvvm.UI.Interactivity;
+using DevExpress.Mvvm.UI.Interactivity;
 using DevExpress.Xpf.Core;
 using System;
 using System.Collections.Generic;
@@ -29,7 +29,7 @@ namespace SyntaxEditor.Theming {
         public static readonly DependencyProperty RulesProperty = 
             DependencyProperty.Register(nameof(Rules), typeof(IReadOnlyList<MonacoThemeRule>), typeof(ThemeBehavior), new PropertyMetadata(null, OnRulesChanged));
 
-        private static void OnRulesChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+        static void OnRulesChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var behavior = (ThemeBehavior)sender;
             behavior.ApplyCurrentTheme();
         }
@@ -42,20 +42,20 @@ namespace SyntaxEditor.Theming {
         public static readonly DependencyProperty ApplyDevExpressColorsProperty =
             DependencyProperty.Register(nameof(ApplyDevExpressColors), typeof(bool), typeof(ThemeBehavior), new PropertyMetadata(true, OnApplyDevExpressColorsChanged));
 
-        private static void OnApplyDevExpressColorsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+        static void OnApplyDevExpressColorsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var behavior = (ThemeBehavior)sender;
             behavior.ApplyCurrentTheme();
         }
 
-        private void LightweightThemeManager_CurrentThemeChanged(object sender, ValueChangedEventArgs<LightweightTheme> e) {
+        void LightweightThemeManager_CurrentThemeChanged(object sender, ValueChangedEventArgs<LightweightTheme> e) {
             ApplyCurrentTheme();
         }
 
-        private void AssociatedObject_EditorInitialized(object? sender, EventArgs e) {
+        void AssociatedObject_EditorInitialized(object? sender, EventArgs e) {
             ApplyCurrentTheme();
         }
 
-        private void AdjustDXColors(MonacoTheme monacoTheme, string dxTheme) {
+        void AdjustDXColors(MonacoTheme monacoTheme, string dxTheme) {
             if(monacoTheme.Colors == null)
                 return;
 
@@ -93,7 +93,7 @@ namespace SyntaxEditor.Theming {
             }
         }
 
-        private void ApplyCurrentTheme() {
+        void ApplyCurrentTheme() {
             var dxTheme = LightweightThemeManager.CurrentTheme;
             
             var monacoTheme = CreateFromDXTheme(dxTheme.Name, this.Rules, this.ApplyDevExpressColors);
@@ -127,7 +127,7 @@ namespace SyntaxEditor.Theming {
             return result;
         }
 
-        private static Dictionary<string, Color> CreateMonacoColors() {
+        static Dictionary<string, Color> CreateMonacoColors() {
             var result = new Dictionary<string, Color>();
 
             Color? Try(params string[] keys) {
@@ -265,7 +265,7 @@ namespace SyntaxEditor.Theming {
             return result;
         }
 
-        private static MonacoThemeBase ResolveBase(string themeName) {
+        static MonacoThemeBase ResolveBase(string themeName) {
             if (string.IsNullOrWhiteSpace(themeName))
                 return MonacoThemeBase.Light;
 
@@ -291,3 +291,4 @@ namespace SyntaxEditor.Theming {
 
    
 }
+

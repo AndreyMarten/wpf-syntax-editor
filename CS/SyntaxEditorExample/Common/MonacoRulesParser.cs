@@ -1,4 +1,4 @@
-﻿using SyntaxEditor.Theming;
+using SyntaxEditor.Theming;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +9,7 @@ using System.Windows.Media;
 namespace SyntaxEditorExample.Common {
     public static class MonacoRulesParser {
 
-        private static string? ConvertFontStyle(MonacoFontStyle style) {
+        static string? ConvertFontStyle(MonacoFontStyle style) {
             if (style == MonacoFontStyle.None)
                 return null;
 
@@ -31,7 +31,7 @@ namespace SyntaxEditorExample.Common {
             return sb.ToString();
         }
 
-        private static string ToHex(Color c, bool addHashTag = true)
+        static string ToHex(Color c, bool addHashTag = true)
            => $"{(addHashTag ? "#" : string.Empty)}{c.R:X2}{c.G:X2}{c.B:X2}";
 
 
@@ -132,7 +132,7 @@ namespace SyntaxEditorExample.Common {
             }
         }
 
-        private static string NormalizeJsObject(string input) {
+        static string NormalizeJsObject(string input) {
             input = Regex.Replace(input, @"//.*?$", "", RegexOptions.Multiline);
 
             input = Regex.Replace(input, @",(\s*[\]}])", "$1");
@@ -147,7 +147,7 @@ namespace SyntaxEditorExample.Common {
             return input;
         }
 
-        private static bool TryParseColor(string? hex, out Color color) {
+        static bool TryParseColor(string? hex, out Color color) {
             color = default;
 
             if (string.IsNullOrWhiteSpace(hex))
@@ -170,7 +170,7 @@ namespace SyntaxEditorExample.Common {
             }
         }
 
-        private static bool TryParseFontStyle(string? value, out MonacoFontStyle style) {
+        static bool TryParseFontStyle(string? value, out MonacoFontStyle style) {
             style = MonacoFontStyle.None;
 
             if (string.IsNullOrWhiteSpace(value))
@@ -196,3 +196,4 @@ namespace SyntaxEditorExample.Common {
         }
     }
 }
+

@@ -1,4 +1,4 @@
-﻿using DevExpress.Mvvm;
+using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.CodeView;
 using SyntaxEditor;
@@ -141,7 +141,7 @@ namespace SyntaxEditorExample.ViewModels {
   ]
 }";
 
-		private const string testText = @"function test(x: number) {
+		const string testText = @"function test(x: number) {
 
     /* outer comment
         /* nested comment */
@@ -276,7 +276,7 @@ namespace VS
 
 		public AsyncCommand RefreshLanguagesCommand { get; private set; }
 
-		private async Task RefreshLanguages() {
+		async Task RefreshLanguages() {
 			if (this.SyntaxEditorService == null) {
 				throw new InvalidOperationException("SyntaxEditorService is not available.");
 			}
@@ -287,7 +287,7 @@ namespace VS
 				this.Languages.AddRange(result);
 			}
 		}
-		private bool CanRefreshLanguages() {
+		bool CanRefreshLanguages() {
 			return this.SyntaxEditorService != null;
 		}
 

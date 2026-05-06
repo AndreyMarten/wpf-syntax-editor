@@ -1,4 +1,4 @@
-﻿using DevExpress.Mvvm;
+using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Xpf;
 using DevExpress.Xpf.CodeView;
@@ -33,7 +33,7 @@ namespace SyntaxEditorExample.ViewModels {
             set { this.SetValue(value); }
         }
 
-        private void ParseRawJS() {
+        void ParseRawJS() {
             
         }
 

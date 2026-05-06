@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Media;
 
 namespace SyntaxEditor.Theming {
@@ -11,7 +11,7 @@ namespace SyntaxEditor.Theming {
             return ChangeLightness(color, -Math.Abs(amount));
         }
 
-        private static Color ChangeLightness(Color color, double delta) {
+        static Color ChangeLightness(Color color, double delta) {
             var (h, s, l) = ToHsl(color);
 
             l = Math.Clamp(l + delta, 0, 1);
@@ -19,7 +19,7 @@ namespace SyntaxEditor.Theming {
             return FromHsl(h, s, l, color.A); 
         }
 
-        private static (double h, double s, double l) ToHsl(Color color) {
+        static (double h, double s, double l) ToHsl(Color color) {
             double r = color.R / 255.0;
             double g = color.G / 255.0;
             double b = color.B / 255.0;
@@ -49,7 +49,7 @@ namespace SyntaxEditor.Theming {
             return (h, s, l);
         }
 
-        private static Color FromHsl(double h, double s, double l, byte alpha) {
+        static Color FromHsl(double h, double s, double l, byte alpha) {
             double c = (1 - Math.Abs(2 * l - 1)) * s;
             double x = c * (1 - Math.Abs((h / 60) % 2 - 1));
             double m = l - c / 2;
@@ -66,3 +66,4 @@ namespace SyntaxEditor.Theming {
         }
     }
 }
+

@@ -1,4 +1,4 @@
-﻿using DevExpress.Mvvm;
+using DevExpress.Mvvm;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 
@@ -21,7 +21,7 @@ namespace SyntaxEditorExample.ViewModels {
 
         public string? Error => null;
 
-        private static readonly Regex LanguageIdRegex = new("^[a-zA-Z0-9\\-_]+$", RegexOptions.Compiled);
+        static readonly Regex LanguageIdRegex = new("^[a-zA-Z0-9\\-_]+$", RegexOptions.Compiled);
 
         public string? this[string columnName] {
             get {
