@@ -221,6 +221,28 @@ namespace VS
 			set { SetValue(value); }
 		}
 
+        public ObservableCollection<string> Languages {
+            get {
+                if(languages == null) {
+                    languages = new ObservableCollection<string>();
+                }
+
+                return languages;
+            }
+        }
+
+        public IReadOnlyList<MonacoThemeRule> Rules {
+            get { return GetValue<IReadOnlyList<MonacoThemeRule>>(); }
+            set { SetValue(value); }
+        }
+
+        public string? Language {
+            get { return GetValue<string?>(); }
+            set { SetValue(value); }
+        }
+
+        public AsyncCommand RefreshLanguagesCommand { get; private set; }
+
 		[Command]
 		public void OpenFile() {
 			if(OpenFileDialogService.ShowDialog()) {
@@ -245,33 +267,12 @@ namespace VS
 		public bool CanSaveFile() {
 			return SaveFileDialogService != null;
 		}
-		public ObservableCollection<string> Languages {
-			get {
-              if(languages == null) {
-					languages = new ObservableCollection<string>();
-				}
-
-             return languages;
-			}
-		}
-
-		public IReadOnlyList<MonacoThemeRule> Rules {
-			get { return GetValue<IReadOnlyList<MonacoThemeRule>>(); }
-			set { SetValue(value); }
-		}
 
 		[Command]
 		public async void Initialize() {
 			await RefreshLanguages();
             Language = Languages.FirstOrDefault(c => c.Contains("csharp"));
 		}
-
-		public string? Language {
-			get { return GetValue<string?>(); }
-			set { SetValue(value); }
-		}
-
-		public AsyncCommand RefreshLanguagesCommand { get; private set; }
 
 		async Task RefreshLanguages() {
 			if(SyntaxEditorService == null) {

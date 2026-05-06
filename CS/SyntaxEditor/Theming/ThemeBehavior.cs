@@ -18,15 +18,14 @@ namespace SyntaxEditor.Theming {
             }
         }
 
-        protected override void OnAttached() {
-            base.OnAttached();
-            LightweightThemeManager.CurrentThemeChanged += LightweightThemeManager_CurrentThemeChanged;
-            AssociatedObject.EditorInitialized += AssociatedObject_EditorInitialized;
-        }
-
         public IReadOnlyList<MonacoThemeRule>? Rules {
             get => (IReadOnlyList<MonacoThemeRule>?)GetValue(RulesProperty);
             set => SetValue(RulesProperty, value);
+        }
+
+        public bool ApplyDevExpressColors {
+            get { return (bool)GetValue(ApplyDevExpressColorsProperty); }
+            set { SetValue(ApplyDevExpressColorsProperty, value); }
         }
 
         static void OnRulesChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
@@ -34,9 +33,10 @@ namespace SyntaxEditor.Theming {
             behavior.ApplyCurrentTheme();
         }
 
-        public bool ApplyDevExpressColors {
-            get { return (bool)GetValue(ApplyDevExpressColorsProperty); }
-            set { SetValue(ApplyDevExpressColorsProperty, value); }
+        protected override void OnAttached() {
+            base.OnAttached();
+            LightweightThemeManager.CurrentThemeChanged += LightweightThemeManager_CurrentThemeChanged;
+            AssociatedObject.EditorInitialized += AssociatedObject_EditorInitialized;
         }
 
         static void OnApplyDevExpressColorsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {

@@ -9,10 +9,10 @@ using System.Collections.ObjectModel;
 
 namespace SyntaxEditorExample.ViewModels {
     public class RulesViewModel : ViewModelBase {
+        protected ObservableCollection<MonacoThemeRule> rules;
 
         public IMessageBoxService MessageBoxService => GetService<IMessageBoxService>();
 
-        protected ObservableCollection<MonacoThemeRule> rules;
         public ObservableCollection<MonacoThemeRule> Rules {
             get {
                 if(rules == null) {
