@@ -25,33 +25,59 @@ namespace SyntaxEditor {
         // Note: This is a simple cache and does not handle updates to existing languages or removal of languages.
         readonly Dictionary<string, LanguageDescriptor> registeredLanguages = new();
         bool disposed;
-        public static readonly DependencyProperty TextProperty = DependencyProperty.Register(nameof(Text), typeof(string), typeof(SyntaxEditor), new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnTextChanged));
-        public static readonly DependencyProperty ReadOnlyProperty = DependencyProperty.Register(nameof(ReadOnly), typeof(bool), typeof(SyntaxEditor), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnReadOnlyChanged));
-        public static readonly DependencyPropertyKey IsModifiedPropertyKey = DependencyProperty.RegisterReadOnly(nameof(IsModified), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(false));
+        public static readonly DependencyProperty TextProperty =
+            DependencyProperty.Register(nameof(Text), typeof(string), typeof(SyntaxEditor), new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnTextChanged));
+        public static readonly DependencyProperty ReadOnlyProperty =
+            DependencyProperty.Register(nameof(ReadOnly), typeof(bool), typeof(SyntaxEditor), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnReadOnlyChanged));
+        public static readonly DependencyPropertyKey IsModifiedPropertyKey =
+            DependencyProperty.RegisterReadOnly(nameof(IsModified), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(false));
         public static readonly DependencyProperty IsModifiedProperty = IsModifiedPropertyKey.DependencyProperty;
-        public static readonly DependencyProperty ShowLineNumbersProperty = DependencyProperty.Register(nameof(ShowLineNumbers), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnShowLineNumbersChanged));
-        public static readonly DependencyProperty ShowMinimapProperty = DependencyProperty.Register(nameof(ShowMinimap), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(false, OnShowMinimapChanged));
-        public static readonly DependencyProperty ShowGlyphMarginProperty = DependencyProperty.Register(nameof(ShowGlyphMargin), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(false, OnShowGlyphMarginChanged));
-        public static readonly DependencyProperty EnableFoldingProperty = DependencyProperty.Register(nameof(EnableFolding), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnEnableFoldingChanged));
-        public static readonly DependencyProperty EnableContextMenuProperty = DependencyProperty.Register(nameof(EnableContextMenu), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnEnableContextMenuChanged));
-        public static readonly DependencyProperty EnableSmoothScrollingProperty = DependencyProperty.Register(nameof(EnableSmoothScrolling), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(false, OnEnableSmoothScrollingChanged));
-        public static readonly DependencyProperty EnableScrollBeyondLastLineProperty = DependencyProperty.Register(nameof(EnableScrollBeyondLastLine), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnEnableScrollBeyondLastLineChanged));
-        public static readonly DependencyProperty ScrollBeyondLastColumnProperty = DependencyProperty.Register(nameof(ScrollBeyondLastColumn), typeof(int), typeof(SyntaxEditor), new PropertyMetadata(5, ScrollBeyondLastColumnChanged));
-        public static readonly DependencyProperty LineNumbersMinCharsProperty = DependencyProperty.Register(nameof(LineNumbersMinChars), typeof(int), typeof(SyntaxEditor), new PropertyMetadata(5, OnLineNumbersMinCharsChanged));
-        public static readonly DependencyProperty EnableDragAndDropProperty = DependencyProperty.Register(nameof(EnableDragAndDrop), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnEnableDragAndDropChanged));
-        public static readonly DependencyProperty EnableMouseWheelZoomProperty = DependencyProperty.Register(nameof(EnableMouseWheelZoom), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(false, EnableMouseWheelZoomChanged));
-        public static readonly DependencyProperty WordWrapProperty = DependencyProperty.Register(nameof(WordWrap), typeof(EditorWordWrap), typeof(SyntaxEditor), new PropertyMetadata(EditorWordWrap.Off, WordWrapChanged));
-        public static readonly DependencyProperty EnableStickyScrollProperty = DependencyProperty.Register(nameof(EnableStickyScroll), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnEnableStickyScrollChanged));
-        public static readonly DependencyProperty TabSizeProperty = DependencyProperty.Register(nameof(TabSize), typeof(int), typeof(SyntaxEditor), new PropertyMetadata(4, OnTabSizeChanged), ValidateTabSize);
-        public static readonly DependencyProperty DetectIndentationProperty = DependencyProperty.Register(nameof(DetectIndentation), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnDetectIndentationChanged));
-        public static readonly DependencyProperty InsertSpacesProperty = DependencyProperty.Register(nameof(InsertSpaces), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnInsertSpacesChanged));
-        public static readonly DependencyProperty AutoIndentProperty = DependencyProperty.Register(nameof(AutoIndent), typeof(EditorAutoIndent), typeof(SyntaxEditor), new PropertyMetadata(EditorAutoIndent.Full, AutoIndentChanged));
-        public static readonly DependencyProperty EnableQuickSuggestionsProperty = DependencyProperty.Register(nameof(EnableQuickSuggestions), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnEnableQuickSuggestionsChanged));
-        public static readonly DependencyProperty EnableWordBasedSuggestionsProperty = DependencyProperty.Register(nameof(EnableWordBasedSuggestions), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnEnableWordBasedSuggestionsChanged));
-        public static readonly DependencyProperty EnableSuggestOnTriggerCharactersProperty = DependencyProperty.Register(nameof(EnableSuggestOnTriggerCharacters), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnEnableSuggestOnTriggerCharactersChanged));
-        public static readonly DependencyProperty EnableParameterHintsProperty = DependencyProperty.Register(nameof(EnableParameterHints), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnEnableParameterHintsChanged));
-        public static readonly DependencyProperty ThemeNameProperty = DependencyProperty.Register(nameof(ThemeName), typeof(string), typeof(SyntaxEditor), new PropertyMetadata("vs", OnThemeNameChanged));
-        public static readonly DependencyProperty EditorLanguageProperty = DependencyProperty.Register(nameof(EditorLanguage), typeof(string), typeof(SyntaxEditor), new FrameworkPropertyMetadata("csharp", OnEditorLanguageChanged));
+        public static readonly DependencyProperty ShowLineNumbersProperty =
+            DependencyProperty.Register(nameof(ShowLineNumbers), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnShowLineNumbersChanged));
+        public static readonly DependencyProperty ShowMinimapProperty =
+            DependencyProperty.Register(nameof(ShowMinimap), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(false, OnShowMinimapChanged));
+        public static readonly DependencyProperty ShowGlyphMarginProperty =
+            DependencyProperty.Register(nameof(ShowGlyphMargin), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(false, OnShowGlyphMarginChanged));
+        public static readonly DependencyProperty EnableFoldingProperty =
+            DependencyProperty.Register(nameof(EnableFolding), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnEnableFoldingChanged));
+        public static readonly DependencyProperty EnableContextMenuProperty =
+            DependencyProperty.Register(nameof(EnableContextMenu), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnEnableContextMenuChanged));
+        public static readonly DependencyProperty EnableSmoothScrollingProperty =
+            DependencyProperty.Register(nameof(EnableSmoothScrolling), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(false, OnEnableSmoothScrollingChanged));
+        public static readonly DependencyProperty EnableScrollBeyondLastLineProperty =
+            DependencyProperty.Register(nameof(EnableScrollBeyondLastLine), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnEnableScrollBeyondLastLineChanged));
+        public static readonly DependencyProperty ScrollBeyondLastColumnProperty =
+            DependencyProperty.Register(nameof(ScrollBeyondLastColumn), typeof(int), typeof(SyntaxEditor), new PropertyMetadata(5, ScrollBeyondLastColumnChanged));
+        public static readonly DependencyProperty LineNumbersMinCharsProperty =
+            DependencyProperty.Register(nameof(LineNumbersMinChars), typeof(int), typeof(SyntaxEditor), new PropertyMetadata(5, OnLineNumbersMinCharsChanged));
+        public static readonly DependencyProperty EnableDragAndDropProperty =
+            DependencyProperty.Register(nameof(EnableDragAndDrop), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnEnableDragAndDropChanged));
+        public static readonly DependencyProperty EnableMouseWheelZoomProperty =
+            DependencyProperty.Register(nameof(EnableMouseWheelZoom), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(false, EnableMouseWheelZoomChanged));
+        public static readonly DependencyProperty WordWrapProperty =
+            DependencyProperty.Register(nameof(WordWrap), typeof(EditorWordWrap), typeof(SyntaxEditor), new PropertyMetadata(EditorWordWrap.Off, WordWrapChanged));
+        public static readonly DependencyProperty EnableStickyScrollProperty =
+            DependencyProperty.Register(nameof(EnableStickyScroll), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnEnableStickyScrollChanged));
+        public static readonly DependencyProperty TabSizeProperty =
+            DependencyProperty.Register(nameof(TabSize), typeof(int), typeof(SyntaxEditor), new PropertyMetadata(4, OnTabSizeChanged), ValidateTabSize);
+        public static readonly DependencyProperty DetectIndentationProperty =
+            DependencyProperty.Register(nameof(DetectIndentation), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnDetectIndentationChanged));
+        public static readonly DependencyProperty InsertSpacesProperty =
+            DependencyProperty.Register(nameof(InsertSpaces), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnInsertSpacesChanged));
+        public static readonly DependencyProperty AutoIndentProperty =
+            DependencyProperty.Register(nameof(AutoIndent), typeof(EditorAutoIndent), typeof(SyntaxEditor), new PropertyMetadata(EditorAutoIndent.Full, AutoIndentChanged));
+        public static readonly DependencyProperty EnableQuickSuggestionsProperty =
+            DependencyProperty.Register(nameof(EnableQuickSuggestions), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnEnableQuickSuggestionsChanged));
+        public static readonly DependencyProperty EnableWordBasedSuggestionsProperty =
+            DependencyProperty.Register(nameof(EnableWordBasedSuggestions), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnEnableWordBasedSuggestionsChanged));
+        public static readonly DependencyProperty EnableSuggestOnTriggerCharactersProperty =
+            DependencyProperty.Register(nameof(EnableSuggestOnTriggerCharacters), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnEnableSuggestOnTriggerCharactersChanged));
+        public static readonly DependencyProperty EnableParameterHintsProperty =
+            DependencyProperty.Register(nameof(EnableParameterHints), typeof(bool), typeof(SyntaxEditor), new PropertyMetadata(true, OnEnableParameterHintsChanged));
+        public static readonly DependencyProperty ThemeNameProperty =
+            DependencyProperty.Register(nameof(ThemeName), typeof(string), typeof(SyntaxEditor), new PropertyMetadata("vs", OnThemeNameChanged));
+        public static readonly DependencyProperty EditorLanguageProperty =
+            DependencyProperty.Register(nameof(EditorLanguage), typeof(string), typeof(SyntaxEditor), new FrameworkPropertyMetadata("csharp", OnEditorLanguageChanged));
         event EventHandler<IReadOnlyList<string>>? LanguagesReceivedInternal;
 
         static SyntaxEditor() {
