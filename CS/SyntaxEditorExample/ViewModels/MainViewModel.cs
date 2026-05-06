@@ -328,7 +328,7 @@ namespace VS
                 return;
             }
             //update rules so that theme can apply it.
-            Rules = vm.Rules.ToList();
+            Rules = new List<MonacoThemeRule>(vm.Rules);
         }
 
 		public bool CanChangeRules() {

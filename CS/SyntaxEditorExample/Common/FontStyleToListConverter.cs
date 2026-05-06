@@ -14,11 +14,15 @@ namespace SyntaxEditorExample.Common {
                 return value;
             }
 
-            List<object> list = Enum.GetValues(typeof(MonacoFontStyle))
-                .Cast<MonacoFontStyle>()
-                .Where(c => ((MonacoFontStyle)value).HasFlag(c))
-                .Cast<object>()
-                .ToList();
+            MonacoFontStyle selectedStyles = (MonacoFontStyle)value;
+            List<object> list = new List<object>();
+            Array values = Enum.GetValues(typeof(MonacoFontStyle));
+            foreach(object enumValue in values) {
+                MonacoFontStyle style = (MonacoFontStyle)enumValue;
+                if(selectedStyles.HasFlag(style)) {
+                    list.Add(style);
+                }
+            }
 
             return list;
         }
@@ -28,7 +32,14 @@ namespace SyntaxEditorExample.Common {
                 return value;
             }
 
-            return ((List<object>)value).Cast<MonacoFontStyle>().Aggregate((x, y) => x |= y);
+            List<object> source = (List<object>)value;
+            MonacoFontStyle result = MonacoFontStyle.None;
+            foreach(object sourceValue in source) {
+                MonacoFontStyle style = (MonacoFontStyle)sourceValue;
+                result |= style;
+            }
+
+            return result;
         }
 
         public override object ProvideValue(IServiceProvider serviceProvider) {

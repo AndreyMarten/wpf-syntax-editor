@@ -521,15 +521,20 @@ namespace SyntaxEditor {
             if(theme == null)
                 throw new ArgumentNullException(nameof(theme));
 
+            IEnumerable<MonacoThemeRule> sourceRules = theme.Rules ?? Enumerable.Empty<MonacoThemeRule>();
+            List<Dictionary<string, object>> convertedRules = new List<Dictionary<string, object>>();
+            foreach(MonacoThemeRule sourceRule in sourceRules) {
+                Dictionary<string, object>? convertedRule = ConvertRule(sourceRule);
+                if(convertedRule != null)
+                    convertedRules.Add(convertedRule);
+            }
+
             object payload = new {
                 name = theme.Name,
                 @base = MapBase(theme.Base),
                 inherit = theme.Inherit,
                 colors = theme.Colors?.ToDictionary(kvp => kvp.Key, kvp => ToHex(kvp.Value)) ?? new Dictionary<string, string>(),
-                rules = (theme.Rules ?? Enumerable.Empty<MonacoThemeRule>())
-                    .Select(ConvertRule)
-                    .Where(r => r != null)
-                    .ToList()
+                rules = convertedRules
             };
 
             SendCommand(EditorCommandType.RegisterTheme, payload);
