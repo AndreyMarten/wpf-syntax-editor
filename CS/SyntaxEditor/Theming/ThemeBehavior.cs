@@ -30,7 +30,7 @@ namespace SyntaxEditor.Theming {
         }
 
         static void OnRulesChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var behavior = (ThemeBehavior)sender;
+            ThemeBehavior behavior = (ThemeBehavior)sender;
             behavior.ApplyCurrentTheme();
         }
 
@@ -40,7 +40,7 @@ namespace SyntaxEditor.Theming {
         }
 
         static void OnApplyDevExpressColorsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var behavior = (ThemeBehavior)sender;
+            ThemeBehavior behavior = (ThemeBehavior)sender;
             behavior.ApplyCurrentTheme();
         }
 
@@ -91,9 +91,9 @@ namespace SyntaxEditor.Theming {
         }
 
         void ApplyCurrentTheme() {
-            var dxTheme = LightweightThemeManager.CurrentTheme;
+            LightweightTheme dxTheme = LightweightThemeManager.CurrentTheme;
 
-            var monacoTheme = CreateFromDXTheme(dxTheme.Name, Rules, ApplyDevExpressColors);
+            MonacoTheme monacoTheme = CreateFromDXTheme(dxTheme.Name, Rules, ApplyDevExpressColors);
             AdjustDXColors(monacoTheme, dxTheme.Name);
 
             AssociatedObject.RegisterTheme(monacoTheme);
@@ -101,8 +101,8 @@ namespace SyntaxEditor.Theming {
         }
 
         public static Color? GetColor(string colorKey) {
-            var palette = LightweightThemeManager.CurrentTheme.Palette;
-            var key = $"Color.{colorKey}";
+            ResourceDictionary palette = LightweightThemeManager.CurrentTheme.Palette;
+            string key = $"Color.{colorKey}";
 
             if(palette.Contains(key) && palette[key] is Color color) {
                 return color;
@@ -112,9 +112,9 @@ namespace SyntaxEditor.Theming {
         }
 
         public static MonacoTheme CreateFromDXTheme(string DXThemeName, IReadOnlyList<MonacoThemeRule>? rules = null, bool applyDevExpressColors = false) {
-            var baseKind = ResolveBase(DXThemeName);
+            MonacoThemeBase baseKind = ResolveBase(DXThemeName);
 
-            var result = new MonacoTheme {
+            MonacoTheme result = new MonacoTheme {
                 Name = $"{DXThemeName.ToLowerInvariant()}",
                 Base = baseKind,
                 Colors = applyDevExpressColors ? CreateMonacoColors() : null,
@@ -125,11 +125,11 @@ namespace SyntaxEditor.Theming {
         }
 
         static Dictionary<string, Color> CreateMonacoColors() {
-            var result = new Dictionary<string, Color>();
+            Dictionary<string, Color> result = new Dictionary<string, Color>();
 
             Color? Try(params string[] keys) {
-                foreach(var key in keys) {
-                    var color = GetColor(key);
+                foreach(string key in keys) {
+                    Color? color = GetColor(key);
                     if(color.HasValue)
                         return color;
                 }
@@ -138,7 +138,7 @@ namespace SyntaxEditor.Theming {
             }
 
             void Map(string monacoKey, params string[] dxKeys) {
-                var color = Try(dxKeys);
+                Color? color = Try(dxKeys);
                 if(color.HasValue)
                     result[monacoKey] = color.Value;
             }

@@ -94,12 +94,12 @@ namespace SyntaxEditor {
         }
 
         static void OnTextChanged(object sender, DependencyPropertyChangedEventArgs e) {
-            var control = (SyntaxEditor)sender;
+            SyntaxEditor control = (SyntaxEditor)sender;
 
             if(control.updatingFromEditor)
                 return;
 
-            var text = e.NewValue as string ?? string.Empty;
+            string text = e.NewValue as string ?? string.Empty;
             control.SetEditorText(text);
         }
 
@@ -119,7 +119,7 @@ namespace SyntaxEditor {
         }
 
         static void OnReadOnlyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var control = (SyntaxEditor)sender;
+            SyntaxEditor control = (SyntaxEditor)sender;
             control.SetEditorReadOnly((bool)e.NewValue);
         }
 
@@ -158,7 +158,7 @@ namespace SyntaxEditor {
         };
 
         void UpdateOption(EditorOption option, object? value) {
-            var monacoOption = ToMonacoOption(option);
+            string monacoOption = ToMonacoOption(option);
 
             object? monacoValue = null;
             switch(option) {
@@ -190,7 +190,7 @@ namespace SyntaxEditor {
         }
 
         static void OnShowLineNumbersChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var control = (SyntaxEditor)sender;
+            SyntaxEditor control = (SyntaxEditor)sender;
             control.SetShowLineNumbers((bool)e.NewValue);
         }
 
@@ -204,7 +204,7 @@ namespace SyntaxEditor {
         }
 
         static void OnShowMinimapChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var control = (SyntaxEditor)sender;
+            SyntaxEditor control = (SyntaxEditor)sender;
             control.SetShowMinimap((bool)e.NewValue);
         }
 
@@ -218,7 +218,7 @@ namespace SyntaxEditor {
         }
 
         static void OnShowGlyphMarginChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var control = (SyntaxEditor)sender;
+            SyntaxEditor control = (SyntaxEditor)sender;
             control.SetShowGlyphMargin((bool)e.NewValue);
         }
 
@@ -232,7 +232,7 @@ namespace SyntaxEditor {
         }
 
         static void OnEnableFoldingChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var control = (SyntaxEditor)sender;
+            SyntaxEditor control = (SyntaxEditor)sender;
             control.SetEnableFolding((bool)e.NewValue);
         }
 
@@ -246,7 +246,7 @@ namespace SyntaxEditor {
         }
 
         static void OnEnableContextMenuChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var control = (SyntaxEditor)sender;
+            SyntaxEditor control = (SyntaxEditor)sender;
             control.SetEnableContextMenu((bool)e.NewValue);
         }
 
@@ -260,7 +260,7 @@ namespace SyntaxEditor {
         }
 
         static void OnEnableSmoothScrollingChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var control = (SyntaxEditor)sender;
+            SyntaxEditor control = (SyntaxEditor)sender;
             control.SetEnableSmoothScrolling((bool)e.NewValue);
         }
 
@@ -274,7 +274,7 @@ namespace SyntaxEditor {
         }
 
         static void OnEnableScrollBeyondLastLineChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var control = (SyntaxEditor)sender;
+            SyntaxEditor control = (SyntaxEditor)sender;
             control.SetEnableScrollBeyondLastLine((bool)e.NewValue);
         }
 
@@ -288,7 +288,7 @@ namespace SyntaxEditor {
         }
 
         static void ScrollBeyondLastColumnChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var control = (SyntaxEditor)sender;
+            SyntaxEditor control = (SyntaxEditor)sender;
             control.SetScrollBeyondLastColumn((int)e.NewValue);
         }
 
@@ -302,7 +302,7 @@ namespace SyntaxEditor {
         }
 
         static void OnLineNumbersMinCharsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var control = (SyntaxEditor)sender;
+            SyntaxEditor control = (SyntaxEditor)sender;
             control.SetLineNumbersMinChars((int)e.NewValue);
         }
 
@@ -316,7 +316,7 @@ namespace SyntaxEditor {
         }
 
         static void OnEnableDragAndDropChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var control = (SyntaxEditor)sender;
+            SyntaxEditor control = (SyntaxEditor)sender;
             control.SetEnableDragAndDrop((bool)e.NewValue);
         }
 
@@ -330,7 +330,7 @@ namespace SyntaxEditor {
         }
 
         static void EnableMouseWheelZoomChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var control = (SyntaxEditor)sender;
+            SyntaxEditor control = (SyntaxEditor)sender;
             control.SetEnableMouseWheelZoom((bool)e.NewValue);
         }
 
@@ -344,7 +344,7 @@ namespace SyntaxEditor {
         }
 
         static void WordWrapChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var control = (SyntaxEditor)sender;
+            SyntaxEditor control = (SyntaxEditor)sender;
             control.SetWordWrap((EditorWordWrap)e.NewValue);
         }
 
@@ -363,7 +363,7 @@ namespace SyntaxEditor {
         }
 
         static void OnEnableStickyScrollChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var control = (SyntaxEditor)sender;
+            SyntaxEditor control = (SyntaxEditor)sender;
             control.SetEnableStickyScroll((bool)e.NewValue);
         }
 
@@ -385,7 +385,7 @@ namespace SyntaxEditor {
         }
 
         static void OnTabSizeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var control = (SyntaxEditor)sender;
+            SyntaxEditor control = (SyntaxEditor)sender;
             control.SetTabSize((int)e.NewValue);
         }
 
@@ -399,7 +399,7 @@ namespace SyntaxEditor {
         }
 
         static void OnDetectIndentationChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var control = (SyntaxEditor)sender;
+            SyntaxEditor control = (SyntaxEditor)sender;
             control.SetDetectIndentation((bool)e.NewValue);
         }
 
@@ -413,7 +413,7 @@ namespace SyntaxEditor {
         }
 
         static void OnInsertSpacesChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var control = (SyntaxEditor)sender;
+            SyntaxEditor control = (SyntaxEditor)sender;
             control.SetInsertSpaces((bool)e.NewValue);
         }
 
@@ -428,7 +428,7 @@ namespace SyntaxEditor {
         }
 
         static void AutoIndentChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var control = (SyntaxEditor)sender;
+            SyntaxEditor control = (SyntaxEditor)sender;
             control.SetAutoIndent((EditorAutoIndent)e.NewValue);
         }
 
@@ -452,7 +452,7 @@ namespace SyntaxEditor {
         }
 
         static void OnEnableQuickSuggestionsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var control = (SyntaxEditor)sender;
+            SyntaxEditor control = (SyntaxEditor)sender;
             control.SetEnableQuickSuggestions((bool)e.NewValue);
         }
 
@@ -466,11 +466,11 @@ namespace SyntaxEditor {
         }
 
         static void OnEnableWordBasedSuggestionsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var control = (SyntaxEditor)sender;
+            SyntaxEditor control = (SyntaxEditor)sender;
             control.SetEnableWordBasedSuggestions((bool)e.NewValue);
         }
         void SetEnableWordBasedSuggestions(bool enabled) {
-            var value = enabled ? "currentDocument" : "off";
+            string value = enabled ? "currentDocument" : "off";
             UpdateOption(EditorOption.EnableWordBasedSuggestions, value);
         }
 
@@ -479,7 +479,7 @@ namespace SyntaxEditor {
             set { SetValue(EnableSuggestOnTriggerCharactersProperty, value); }
         }
         static void OnEnableSuggestOnTriggerCharactersChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var control = (SyntaxEditor)sender;
+            SyntaxEditor control = (SyntaxEditor)sender;
             control.SetEnableSuggestOnTriggerCharacters((bool)e.NewValue);
         }
 
@@ -493,12 +493,12 @@ namespace SyntaxEditor {
         }
 
         static void OnEnableParameterHintsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var control = (SyntaxEditor)sender;
+            SyntaxEditor control = (SyntaxEditor)sender;
             control.SetEnableParameterHints((bool)e.NewValue);
         }
 
         void SetEnableParameterHints(bool enabled) {
-            var value = new { enabled };
+            object value = new { enabled };
             UpdateOption(EditorOption.EnableParameterHints, value);
         }
 
@@ -506,14 +506,14 @@ namespace SyntaxEditor {
             if(!editorReady)
                 return;
 
-            var cmd = new EditorCommand {
+            EditorCommand cmd = new EditorCommand {
                 Type = type,
                 Payload = payload
             };
 
-            var options = new JsonSerializerOptions(JsonSerializerOptions.Web);
+            JsonSerializerOptions options = new JsonSerializerOptions(JsonSerializerOptions.Web);
 
-            var json = JsonSerializer.Serialize(cmd, options);
+            string json = JsonSerializer.Serialize(cmd, options);
             webView?.CoreWebView2.PostWebMessageAsJson(json);
         }
 
@@ -521,7 +521,7 @@ namespace SyntaxEditor {
             if(theme == null)
                 throw new ArgumentNullException(nameof(theme));
 
-            var payload = new {
+            object payload = new {
                 name = theme.Name,
                 @base = MapBase(theme.Base),
                 inherit = theme.Inherit,
@@ -536,7 +536,7 @@ namespace SyntaxEditor {
         }
 
         static Dictionary<string, object>? ConvertRule(MonacoThemeRule r) {
-            var rule = new Dictionary<string, object> {
+            Dictionary<string, object> rule = new Dictionary<string, object> {
                 ["token"] = r.Token
             };
 
@@ -546,7 +546,7 @@ namespace SyntaxEditor {
             if(r.Background is Color bg)
                 rule["background"] = ToHex(bg, false);
 
-            var fontStyle = ConvertFontStyle(r.FontStyle ?? MonacoFontStyle.None);
+            string? fontStyle = ConvertFontStyle(r.FontStyle ?? MonacoFontStyle.None);
             if(!string.IsNullOrEmpty(fontStyle))
                 rule["fontStyle"] = fontStyle;
 
@@ -557,7 +557,7 @@ namespace SyntaxEditor {
             if(style == MonacoFontStyle.None)
                 return null;
 
-            var sb = new StringBuilder(32);
+            StringBuilder sb = new StringBuilder(32);
 
             if((style & MonacoFontStyle.Bold) != 0)
                 sb.Append("bold ");
@@ -591,7 +591,7 @@ namespace SyntaxEditor {
         }
 
         static void OnThemeNameChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var control = (SyntaxEditor)sender;
+            SyntaxEditor control = (SyntaxEditor)sender;
             control.SetTheme((string)e.NewValue);
         }
 
@@ -627,7 +627,7 @@ namespace SyntaxEditor {
                     IsModified = message.Payload.GetBoolean();
                     break;
                 case EditorMessageType.Languages:
-                    var langs = message.Payload
+                    List<string> langs = message.Payload
                         .EnumerateArray()
                         .Select(x => x.GetString()!)
                         .ToList();
@@ -681,7 +681,7 @@ namespace SyntaxEditor {
             if(Equals(e.OldValue, e.NewValue))
                 return;
 
-            var control = (SyntaxEditor)sender;
+            SyntaxEditor control = (SyntaxEditor)sender;
             control.SetEditorLanguage((string)e.NewValue);
         }
 
@@ -694,7 +694,7 @@ namespace SyntaxEditor {
 
         public async Task<IReadOnlyList<string>> GetAvailableLanguagesAsync(CancellationToken cancellationToken = default) {
 
-            var tcs = new TaskCompletionSource<IReadOnlyList<string>>(TaskCreationOptions.RunContinuationsAsynchronously);
+            TaskCompletionSource<IReadOnlyList<string>> tcs = new TaskCompletionSource<IReadOnlyList<string>>(TaskCreationOptions.RunContinuationsAsynchronously);
 
             void Handler(object? s, IReadOnlyList<string> langs) {
                 LanguagesReceivedInternal -= Handler;
@@ -703,8 +703,8 @@ namespace SyntaxEditor {
 
             LanguagesReceivedInternal += Handler;
 
-            using var timeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
-            using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, timeoutCts.Token);
+            using CancellationTokenSource timeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+            using CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, timeoutCts.Token);
 
             using(linkedCts.Token.Register(() => {
                 LanguagesReceivedInternal -= Handler;
@@ -724,7 +724,7 @@ namespace SyntaxEditor {
             if(language == null)
                 throw new ArgumentNullException(nameof(language));
 
-            var payload = new {
+            object payload = new {
                 id = language.Id,
                 monarch = language.Monarch,
                 configuration = language.Configuration
@@ -734,7 +734,7 @@ namespace SyntaxEditor {
         }
 
         void RestoreRegisteredLanguages() {
-            foreach(var language in registeredLanguages.Values) {
+            foreach(LanguageDescriptor language in registeredLanguages.Values) {
                 RegisterLanguage(language);
             }
         }
@@ -742,7 +742,7 @@ namespace SyntaxEditor {
         public override void OnApplyTemplate() {
             base.OnApplyTemplate();
 
-            var newWebView = GetTemplateChild("PART_WebView") as WebView2;
+            WebView2? newWebView = GetTemplateChild("PART_WebView") as WebView2;
 
             if(newWebView == null)
                 throw new InvalidOperationException("PART_WebView not found.");
@@ -762,7 +762,7 @@ namespace SyntaxEditor {
         }
 
         async Task InitializeAsync() {
-            var currentWebView = webView;
+            WebView2? currentWebView = webView;
             if(currentWebView == null)
                 return;
 
@@ -776,7 +776,7 @@ namespace SyntaxEditor {
             currentWebView.CoreWebView2.ContextMenuRequested -= CoreWebView2_ContextMenuRequested;
             currentWebView.CoreWebView2.ContextMenuRequested += CoreWebView2_ContextMenuRequested;
 
-            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Monaco", "index.html");
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Monaco", "index.html");
 
             if(!File.Exists(path))
                 throw new FileNotFoundException(path);
@@ -804,7 +804,7 @@ namespace SyntaxEditor {
         }
 
         public void DetachWebView() {
-            var currentWebView = webView;
+            WebView2? currentWebView = webView;
             if(currentWebView?.CoreWebView2 != null) {
                 currentWebView.CoreWebView2.WebMessageReceived -= CoreWebView2_WebMessageReceived;
                 currentWebView.CoreWebView2.ContextMenuRequested -= CoreWebView2_ContextMenuRequested;

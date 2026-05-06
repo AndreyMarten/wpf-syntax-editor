@@ -44,7 +44,7 @@ namespace SyntaxEditorExample.ViewModels {
 
         [Command]
         public void ApplyJS() {
-            if(!MonacoRulesParser.TryParse(RawRulesText ?? string.Empty, out var parsed)) {
+            if(!MonacoRulesParser.TryParse(RawRulesText ?? string.Empty, out List<MonacoThemeRule> parsed)) {
                 MessageBoxService?.ShowMessage(
                     "Failed to parse rules. Please check the format.",
                     "Error",

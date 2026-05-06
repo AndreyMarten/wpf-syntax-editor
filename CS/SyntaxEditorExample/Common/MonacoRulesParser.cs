@@ -13,7 +13,7 @@ namespace SyntaxEditorExample.Common {
             if(style == MonacoFontStyle.None)
                 return null;
 
-            var sb = new StringBuilder(32);
+            StringBuilder sb = new StringBuilder(32);
 
             if((style & MonacoFontStyle.Bold) != 0)
                 sb.Append("bold ");
@@ -38,11 +38,11 @@ namespace SyntaxEditorExample.Common {
             if(rules == null || rules.Count == 0)
                 return "[]";
 
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             sb.AppendLine("[");
 
             for(int i = 0; i < rules.Count; i++) {
-                var r = rules[i];
+                MonacoThemeRule r = rules[i];
 
                 sb.Append("    { ");
                 sb.Append($"token: \"{r.Token}\"");
@@ -53,7 +53,7 @@ namespace SyntaxEditorExample.Common {
                 if(r.Background is Color bg)
                     sb.Append($", background: \"{ToHex(bg, false)}\"");
 
-                var fontStyle = ConvertFontStyle(r.FontStyle ?? MonacoFontStyle.None);
+                string? fontStyle = ConvertFontStyle(r.FontStyle ?? MonacoFontStyle.None);
                 if(!string.IsNullOrEmpty(fontStyle))
                     sb.Append($", fontStyle: \"{fontStyle}\"");
 
@@ -79,44 +79,44 @@ namespace SyntaxEditorExample.Common {
                 return false;
 
             try {
-                var normalized = NormalizeJsObject(text);
+                string normalized = NormalizeJsObject(text);
 
-                using var doc = JsonDocument.Parse(normalized);
+                using JsonDocument doc = JsonDocument.Parse(normalized);
 
                 if(doc.RootElement.ValueKind != JsonValueKind.Array)
                     return false;
 
-                foreach(var el in doc.RootElement.EnumerateArray()) {
+                foreach(JsonElement el in doc.RootElement.EnumerateArray()) {
                     if(el.ValueKind != JsonValueKind.Object)
                         return false;
 
-                    if(!el.TryGetProperty("token", out var tokenProp))
+                    if(!el.TryGetProperty("token", out JsonElement tokenProp))
                         return false;
 
-                    var token = tokenProp.GetString();
+                    string? token = tokenProp.GetString();
                     if(string.IsNullOrWhiteSpace(token))
                         return false;
 
-                    var rule = new MonacoThemeRule {
+                    MonacoThemeRule rule = new MonacoThemeRule {
                         Token = token
                     };
 
-                    if(el.TryGetProperty("foreground", out var fgProp)) {
-                        if(!TryParseColor(fgProp.GetString(), out var fg))
+                    if(el.TryGetProperty("foreground", out JsonElement fgProp)) {
+                        if(!TryParseColor(fgProp.GetString(), out Color fg))
                             return false;
 
                         rule.Foreground = fg;
                     }
 
-                    if(el.TryGetProperty("background", out var bgProp)) {
-                        if(!TryParseColor(bgProp.GetString(), out var bg))
+                    if(el.TryGetProperty("background", out JsonElement bgProp)) {
+                        if(!TryParseColor(bgProp.GetString(), out Color bg))
                             return false;
 
                         rule.Background = bg;
                     }
 
-                    if(el.TryGetProperty("fontStyle", out var fsProp)) {
-                        if(!TryParseFontStyle(fsProp.GetString(), out var style))
+                    if(el.TryGetProperty("fontStyle", out JsonElement fsProp)) {
+                        if(!TryParseFontStyle(fsProp.GetString(), out MonacoFontStyle style))
                             return false;
 
                         rule.FontStyle = style;
@@ -158,9 +158,9 @@ namespace SyntaxEditorExample.Common {
                 return false;
 
             try {
-                var r = Convert.ToByte(hex.Substring(0, 2), 16);
-                var g = Convert.ToByte(hex.Substring(2, 2), 16);
-                var b = Convert.ToByte(hex.Substring(4, 2), 16);
+                byte r = Convert.ToByte(hex.Substring(0, 2), 16);
+                byte g = Convert.ToByte(hex.Substring(2, 2), 16);
+                byte b = Convert.ToByte(hex.Substring(4, 2), 16);
 
                 color = Color.FromRgb(r, g, b);
                 return true;
@@ -175,7 +175,7 @@ namespace SyntaxEditorExample.Common {
             if(string.IsNullOrWhiteSpace(value))
                 return true;
 
-            foreach(var part in value.Split(' ', StringSplitOptions.RemoveEmptyEntries)) {
+            foreach(string part in value.Split(' ', StringSplitOptions.RemoveEmptyEntries)) {
                 switch(part) {
                     case "bold":
                         style |= MonacoFontStyle.Bold;

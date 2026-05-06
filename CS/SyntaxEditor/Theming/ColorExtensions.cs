@@ -12,7 +12,7 @@ namespace SyntaxEditor.Theming {
         }
 
         static Color ChangeLightness(Color color, double delta) {
-            var (h, s, l) = ToHsl(color);
+            (double h, double s, double l) = ToHsl(color);
 
             l = Math.Clamp(l + delta, 0, 1);
 

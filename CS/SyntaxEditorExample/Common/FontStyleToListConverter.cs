@@ -14,7 +14,7 @@ namespace SyntaxEditorExample.Common {
                 return value;
             }
 
-            var list = Enum.GetValues(typeof(MonacoFontStyle))
+            List<object> list = Enum.GetValues(typeof(MonacoFontStyle))
                 .Cast<MonacoFontStyle>()
                 .Where(c => ((MonacoFontStyle)value).HasFlag(c))
                 .Cast<object>()

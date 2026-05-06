@@ -224,7 +224,7 @@ namespace VS
 		[Command]
 		public void OpenFile() {
 			if(OpenFileDialogService.ShowDialog()) {
-				var file = OpenFileDialogService.Files.First();
+                IFileInfo file = OpenFileDialogService.Files.First();
 				Text = File.ReadAllText(Path.Combine(file.DirectoryName, file.Name));
 			}
 		}
@@ -236,7 +236,7 @@ namespace VS
 		[Command]
 		public void SaveFile() {
 			if(SaveFileDialogService.ShowDialog()) {
-				var file = SaveFileDialogService.File;
+                IFileInfo file = SaveFileDialogService.File;
 				File.WriteAllText(Path.Combine(file.DirectoryName, file.Name), Text);
 				SyntaxEditorService.MarkAsSaved();
 			}
@@ -279,7 +279,7 @@ namespace VS
 			}
 
 			Languages.Clear();
-			var result = await SyntaxEditorService.GetLanguagesAsync();
+            IReadOnlyCollection<string> result = await SyntaxEditorService.GetLanguagesAsync();
 			if(result != null) {
 				Languages.AddRange(result);
 			}
@@ -295,11 +295,11 @@ namespace VS
                 throw new InvalidOperationException("DialogService is not available.");
             }
 
-			var vm = new RulesViewModel();
+            RulesViewModel vm = new RulesViewModel();
             if(Rules != null)
                 vm.Rules.AddRange(Rules);
 
-            var buttonSave = new UICommand() {
+            UICommand buttonSave = new UICommand() {
                 Id = "save",
                 Caption = "Save",
                 Command = new DelegateCommand(() => { vm.ApplyRulesChanges(); }),
@@ -307,7 +307,7 @@ namespace VS
                 IsCancel = false
             };
 
-            var buttonCancel = new UICommand() {
+            UICommand buttonCancel = new UICommand() {
                 Id = "cancel",
                 Caption = "Cancel",
                 Command = new DelegateCommand(() => { }),
@@ -346,12 +346,12 @@ namespace VS
 				throw new InvalidOperationException("DialogService is not available.");
             }
 
-			var vm = new CustomLanguageViewModel();
+            CustomLanguageViewModel vm = new CustomLanguageViewModel();
 			vm.Monarch = MyLangMonarch;
 			vm.Configuration = MyLangConfiguration;
 			vm.LanguageId = "MyLang";
 
-            var buttonSave = new UICommand() {
+            UICommand buttonSave = new UICommand() {
                 Id = "save",
                 Caption = "Save",
                 Command = new DelegateCommand(() => { }, () => { return !string.IsNullOrWhiteSpace(vm.LanguageId); }),
@@ -359,7 +359,7 @@ namespace VS
                 IsCancel = false
             };
 
-            var buttonCancel = new UICommand() {
+            UICommand buttonCancel = new UICommand() {
                 Id = "cancel",
                 Caption = "Cancel",
                 Command = new DelegateCommand(() => { }),
@@ -380,7 +380,7 @@ namespace VS
 				return;
             }
 
-            var myLang = new LanguageDescriptor {
+            LanguageDescriptor myLang = new LanguageDescriptor {
 				Id = vm.LanguageId,
 				Monarch = vm.Monarch,
 				Configuration = vm.Configuration
