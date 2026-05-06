@@ -627,10 +627,13 @@ namespace SyntaxEditor {
                     IsModified = message.Payload.GetBoolean();
                     break;
                 case EditorMessageType.Languages:
-                    List<string> langs = message.Payload
-                        .EnumerateArray()
-                        .Select(x => x.GetString()!)
-                        .ToList();
+                    List<string> langs = new List<string>();
+                    foreach(JsonElement item in message.Payload.EnumerateArray()) {
+                        string? lang = item.GetString();
+                        if(lang != null) {
+                            langs.Add(lang);
+                        }
+                    }
 
                     LanguagesReceivedInternal?.Invoke(this, langs);
                     break;

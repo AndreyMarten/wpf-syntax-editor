@@ -263,7 +263,7 @@ namespace VS
 		[Command]
 		public async void Initialize() {
 			await RefreshLanguages();
-			Language = Languages.Where(c => c.Contains("csharp")).FirstOrDefault();
+            Language = Languages.FirstOrDefault(c => c.Contains("csharp"));
 		}
 
 		public string? Language {
@@ -335,7 +335,7 @@ namespace VS
 			return DialogService != null;
         }
 
-            [Command]
+        [Command]
 		public async void RegisterCustomLanguage() {
 
 			if(SyntaxEditorService == null) {

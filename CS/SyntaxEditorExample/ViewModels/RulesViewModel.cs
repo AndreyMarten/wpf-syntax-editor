@@ -33,10 +33,6 @@ namespace SyntaxEditorExample.ViewModels {
             set { SetValue(value); }
         }
 
-        void ParseRawJS() {
-
-        }
-
         [Command]
         public void ApplyRules() {
             RawRulesText = MonacoRulesParser.Serialize(Rules);
