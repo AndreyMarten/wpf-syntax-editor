@@ -8,9 +8,9 @@ using System.Windows.Media;
 namespace SyntaxEditor.Theming {
     public class ThemeBehavior : Behavior<SyntaxEditor> {
 
-        public static readonly DependencyProperty RulesProperty = DependencyProperty.Register(nameof(Rules), typeof(IReadOnlyList<MonacoThemeRule>), typeof(ThemeBehavior), new PropertyMetadata(null, OnRulesChanged));
-
         public static readonly DependencyProperty ApplyDevExpressColorsProperty = DependencyProperty.Register(nameof(ApplyDevExpressColors), typeof(bool), typeof(ThemeBehavior), new PropertyMetadata(true, OnApplyDevExpressColorsChanged));
+
+        public static readonly DependencyProperty RulesProperty = DependencyProperty.Register(nameof(Rules), typeof(IReadOnlyList<MonacoThemeRule>), typeof(ThemeBehavior), new PropertyMetadata(null, OnRulesChanged));
 
         static ThemeBehavior() {
             if(!CompatibilitySettings.UseLightweightThemes) {
@@ -18,14 +18,14 @@ namespace SyntaxEditor.Theming {
             }
         }
 
-        public IReadOnlyList<MonacoThemeRule>? Rules {
-            get => (IReadOnlyList<MonacoThemeRule>?)GetValue(RulesProperty);
-            set => SetValue(RulesProperty, value);
-        }
-
         public bool ApplyDevExpressColors {
             get { return (bool)GetValue(ApplyDevExpressColorsProperty); }
             set { SetValue(ApplyDevExpressColorsProperty, value); }
+        }
+
+        public IReadOnlyList<MonacoThemeRule>? Rules {
+            get => (IReadOnlyList<MonacoThemeRule>?)GetValue(RulesProperty);
+            set => SetValue(RulesProperty, value);
         }
 
         static void OnRulesChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {

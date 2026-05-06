@@ -88,9 +88,141 @@ namespace SyntaxEditor {
             MarkAsSavedCommand = new DelegateCommand(MarkAsSaved);
         }
 
+        public EditorAutoIndent AutoIndent {
+            get { return (EditorAutoIndent)GetValue(AutoIndentProperty); }
+            set { SetValue(AutoIndentProperty, value); }
+        }
+
+        public bool DetectIndentation {
+            get { return (bool)GetValue(DetectIndentationProperty); }
+            set { SetValue(DetectIndentationProperty, value); }
+        }
+
+        public string EditorLanguage {
+            get { return (string)GetValue(EditorLanguageProperty); }
+            set { SetValue(EditorLanguageProperty, value); }
+        }
+
+        public bool EnableContextMenu {
+            get { return (bool)GetValue(EnableContextMenuProperty); }
+            set { SetValue(EnableContextMenuProperty, value); }
+        }
+
+        public bool EnableDragAndDrop {
+            get { return (bool)GetValue(EnableDragAndDropProperty); }
+            set { SetValue(EnableDragAndDropProperty, value); }
+        }
+
+        public bool EnableFolding {
+            get { return (bool)GetValue(EnableFoldingProperty); }
+            set { SetValue(EnableFoldingProperty, value); }
+        }
+
+        public bool EnableMouseWheelZoom {
+            get { return (bool)GetValue(EnableMouseWheelZoomProperty); }
+            set { SetValue(EnableMouseWheelZoomProperty, value); }
+        }
+
+        public bool EnableParameterHints {
+            get { return (bool)GetValue(EnableParameterHintsProperty); }
+            set { SetValue(EnableParameterHintsProperty, value); }
+        }
+
+        public bool EnableQuickSuggestions {
+            get { return (bool)GetValue(EnableQuickSuggestionsProperty); }
+            set { SetValue(EnableQuickSuggestionsProperty, value); }
+        }
+
+        public bool EnableScrollBeyondLastLine {
+            get { return (bool)GetValue(EnableScrollBeyondLastLineProperty); }
+            set { SetValue(EnableScrollBeyondLastLineProperty, value); }
+        }
+
+        public bool EnableSmoothScrolling {
+            get { return (bool)GetValue(EnableSmoothScrollingProperty); }
+            set { SetValue(EnableSmoothScrollingProperty, value); }
+        }
+
+        public bool EnableStickyScroll {
+            get { return (bool)GetValue(EnableStickyScrollProperty); }
+            set { SetValue(EnableStickyScrollProperty, value); }
+        }
+
+        public bool EnableSuggestOnTriggerCharacters {
+            get { return (bool)GetValue(EnableSuggestOnTriggerCharactersProperty); }
+            set { SetValue(EnableSuggestOnTriggerCharactersProperty, value); }
+        }
+
+        public bool EnableWordBasedSuggestions {
+            get { return (bool)GetValue(EnableWordBasedSuggestionsProperty); }
+            set { SetValue(EnableWordBasedSuggestionsProperty, value); }
+        }
+
+        public bool InsertSpaces {
+            get { return (bool)GetValue(InsertSpacesProperty); }
+            set { SetValue(InsertSpacesProperty, value); }
+        }
+
+        public bool IsModified {
+            get => (bool)GetValue(IsModifiedProperty);
+            private set => SetValue(IsModifiedPropertyKey, value);
+        }
+
+        public int LineNumbersMinChars {
+            get { return (int)GetValue(LineNumbersMinCharsProperty); }
+            set { SetValue(LineNumbersMinCharsProperty, value); }
+        }
+
+        public ICommand MarkAsSavedCommand { get; private set; }
+
+        public bool ReadOnly {
+            get { return (bool)GetValue(ReadOnlyProperty); }
+            set { SetValue(ReadOnlyProperty, value); }
+        }
+
+        public int ScrollBeyondLastColumn {
+            get { return (int)GetValue(ScrollBeyondLastColumnProperty); }
+            set { SetValue(ScrollBeyondLastColumnProperty, value); }
+        }
+
+        public bool ShowGlyphMargin {
+            get { return (bool)GetValue(ShowGlyphMarginProperty); }
+            set { SetValue(ShowGlyphMarginProperty, value); }
+        }
+
+        public bool ShowLineNumbers {
+            get { return (bool)GetValue(ShowLineNumbersProperty); }
+            set { SetValue(ShowLineNumbersProperty, value); }
+        }
+
+        public bool ShowMinimap {
+            get { return (bool)GetValue(ShowMinimapProperty); }
+            set { SetValue(ShowMinimapProperty, value); }
+        }
+
+        //When DetectIndentation is enabled, Monaco may override TabSize based on the file content.
+        public int TabSize {
+            get { return (int)GetValue(TabSizeProperty); }
+            set { SetValue(TabSizeProperty, value); }
+        }
+
         public string Text {
             get { return (string)GetValue(TextProperty); }
             set { SetValue(TextProperty, value); }
+        }
+
+        public string ThemeName {
+            get { return (string)GetValue(ThemeNameProperty); }
+            set { SetValue(ThemeNameProperty, value); }
+        }
+
+        public EditorWordWrap WordWrap {
+            get { return (EditorWordWrap)GetValue(WordWrapProperty); }
+            set { SetValue(WordWrapProperty, value); }
+        }
+
+        public void MarkAsSaved() {
+            SendCommand(EditorCommandType.MarkAsSaved);
         }
 
         static void OnTextChanged(object sender, DependencyPropertyChangedEventArgs e) {
@@ -103,33 +235,134 @@ namespace SyntaxEditor {
             control.SetEditorText(text);
         }
 
-        void SetEditorText(string text) {
-            SendCommand(EditorCommandType.SetText, text);
-        }
-
-        public void MarkAsSaved() {
-            SendCommand(EditorCommandType.MarkAsSaved);
-        }
-
-        public ICommand MarkAsSavedCommand { get; private set; }
-
-        public bool ReadOnly {
-            get { return (bool)GetValue(ReadOnlyProperty); }
-            set { SetValue(ReadOnlyProperty, value); }
-        }
-
         static void OnReadOnlyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             SyntaxEditor control = (SyntaxEditor)sender;
             control.SetEditorReadOnly((bool)e.NewValue);
         }
 
-        void SetEditorReadOnly(bool readOnly) {
-            SendCommand(EditorCommandType.SetReadOnly, readOnly);
+        static void OnShowLineNumbersChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            SyntaxEditor control = (SyntaxEditor)sender;
+            control.SetShowLineNumbers((bool)e.NewValue);
         }
 
-        public bool IsModified {
-            get => (bool)GetValue(IsModifiedProperty);
-            private set => SetValue(IsModifiedPropertyKey, value);
+        static void OnShowMinimapChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            SyntaxEditor control = (SyntaxEditor)sender;
+            control.SetShowMinimap((bool)e.NewValue);
+        }
+
+        static void OnShowGlyphMarginChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            SyntaxEditor control = (SyntaxEditor)sender;
+            control.SetShowGlyphMargin((bool)e.NewValue);
+        }
+
+        static void OnEnableFoldingChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            SyntaxEditor control = (SyntaxEditor)sender;
+            control.SetEnableFolding((bool)e.NewValue);
+        }
+
+        static void OnEnableContextMenuChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            SyntaxEditor control = (SyntaxEditor)sender;
+            control.SetEnableContextMenu((bool)e.NewValue);
+        }
+
+        static void OnEnableSmoothScrollingChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            SyntaxEditor control = (SyntaxEditor)sender;
+            control.SetEnableSmoothScrolling((bool)e.NewValue);
+        }
+
+        static void OnEnableScrollBeyondLastLineChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            SyntaxEditor control = (SyntaxEditor)sender;
+            control.SetEnableScrollBeyondLastLine((bool)e.NewValue);
+        }
+
+        static void ScrollBeyondLastColumnChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            SyntaxEditor control = (SyntaxEditor)sender;
+            control.SetScrollBeyondLastColumn((int)e.NewValue);
+        }
+
+        static void OnLineNumbersMinCharsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            SyntaxEditor control = (SyntaxEditor)sender;
+            control.SetLineNumbersMinChars((int)e.NewValue);
+        }
+
+        static void OnEnableDragAndDropChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            SyntaxEditor control = (SyntaxEditor)sender;
+            control.SetEnableDragAndDrop((bool)e.NewValue);
+        }
+
+        static void EnableMouseWheelZoomChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            SyntaxEditor control = (SyntaxEditor)sender;
+            control.SetEnableMouseWheelZoom((bool)e.NewValue);
+        }
+
+        static void WordWrapChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            SyntaxEditor control = (SyntaxEditor)sender;
+            control.SetWordWrap((EditorWordWrap)e.NewValue);
+        }
+
+        static void OnEnableStickyScrollChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            SyntaxEditor control = (SyntaxEditor)sender;
+            control.SetEnableStickyScroll((bool)e.NewValue);
+        }
+
+        static bool ValidateTabSize(object value) {
+            if(value is int i)
+                return i > 0 && i <= 64;
+
+            return false;
+        }
+
+        static void OnTabSizeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            SyntaxEditor control = (SyntaxEditor)sender;
+            control.SetTabSize((int)e.NewValue);
+        }
+
+        static void OnDetectIndentationChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            SyntaxEditor control = (SyntaxEditor)sender;
+            control.SetDetectIndentation((bool)e.NewValue);
+        }
+
+        static void OnInsertSpacesChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            SyntaxEditor control = (SyntaxEditor)sender;
+            control.SetInsertSpaces((bool)e.NewValue);
+        }
+
+        static void AutoIndentChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            SyntaxEditor control = (SyntaxEditor)sender;
+            control.SetAutoIndent((EditorAutoIndent)e.NewValue);
+        }
+
+        static void OnEnableQuickSuggestionsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            SyntaxEditor control = (SyntaxEditor)sender;
+            control.SetEnableQuickSuggestions((bool)e.NewValue);
+        }
+
+        static void OnEnableWordBasedSuggestionsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            SyntaxEditor control = (SyntaxEditor)sender;
+            control.SetEnableWordBasedSuggestions((bool)e.NewValue);
+        }
+
+        static void OnEnableSuggestOnTriggerCharactersChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            SyntaxEditor control = (SyntaxEditor)sender;
+            control.SetEnableSuggestOnTriggerCharacters((bool)e.NewValue);
+        }
+
+        static void OnEnableParameterHintsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            SyntaxEditor control = (SyntaxEditor)sender;
+            control.SetEnableParameterHints((bool)e.NewValue);
+        }
+
+        static void OnThemeNameChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            SyntaxEditor control = (SyntaxEditor)sender;
+            control.SetTheme((string)e.NewValue);
+        }
+
+        static void OnEditorLanguageChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            if(Equals(e.OldValue, e.NewValue))
+                return;
+
+            SyntaxEditor control = (SyntaxEditor)sender;
+            control.SetEditorLanguage((string)e.NewValue);
         }
 
         static string ToMonacoOption(EditorOption option) => option switch {
@@ -156,6 +389,14 @@ namespace SyntaxEditor {
             EditorOption.EnableParameterHints => "parameterHints",
             _ => throw new ArgumentOutOfRangeException(nameof(option))
         };
+
+        void SetEditorText(string text) {
+            SendCommand(EditorCommandType.SetText, text);
+        }
+
+        void SetEditorReadOnly(bool readOnly) {
+            SendCommand(EditorCommandType.SetReadOnly, readOnly);
+        }
 
         void UpdateOption(EditorOption option, object? value) {
             string monacoOption = ToMonacoOption(option);
@@ -184,168 +425,48 @@ namespace SyntaxEditor {
             });
         }
 
-        public bool ShowLineNumbers {
-            get { return (bool)GetValue(ShowLineNumbersProperty); }
-            set { SetValue(ShowLineNumbersProperty, value); }
-        }
-
-        static void OnShowLineNumbersChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            SyntaxEditor control = (SyntaxEditor)sender;
-            control.SetShowLineNumbers((bool)e.NewValue);
-        }
-
         void SetShowLineNumbers(bool show) {
             UpdateOption(EditorOption.LineNumbers, show);
-        }
-
-        public bool ShowMinimap {
-            get { return (bool)GetValue(ShowMinimapProperty); }
-            set { SetValue(ShowMinimapProperty, value); }
-        }
-
-        static void OnShowMinimapChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            SyntaxEditor control = (SyntaxEditor)sender;
-            control.SetShowMinimap((bool)e.NewValue);
         }
 
         void SetShowMinimap(bool show) {
             UpdateOption(EditorOption.Minimap, show);
         }
 
-        public bool ShowGlyphMargin {
-            get { return (bool)GetValue(ShowGlyphMarginProperty); }
-            set { SetValue(ShowGlyphMarginProperty, value); }
-        }
-
-        static void OnShowGlyphMarginChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            SyntaxEditor control = (SyntaxEditor)sender;
-            control.SetShowGlyphMargin((bool)e.NewValue);
-        }
-
         void SetShowGlyphMargin(bool show) {
             UpdateOption(EditorOption.GlyphMargin, show);
-        }
-
-        public bool EnableFolding {
-            get { return (bool)GetValue(EnableFoldingProperty); }
-            set { SetValue(EnableFoldingProperty, value); }
-        }
-
-        static void OnEnableFoldingChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            SyntaxEditor control = (SyntaxEditor)sender;
-            control.SetEnableFolding((bool)e.NewValue);
         }
 
         void SetEnableFolding(bool enabled) {
             UpdateOption(EditorOption.Folding, enabled);
         }
 
-        public bool EnableContextMenu {
-            get { return (bool)GetValue(EnableContextMenuProperty); }
-            set { SetValue(EnableContextMenuProperty, value); }
-        }
-
-        static void OnEnableContextMenuChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            SyntaxEditor control = (SyntaxEditor)sender;
-            control.SetEnableContextMenu((bool)e.NewValue);
-        }
-
         public void SetEnableContextMenu(bool enabled) {
             UpdateOption(EditorOption.ContextMenu, enabled);
-        }
-
-        public bool EnableSmoothScrolling {
-            get { return (bool)GetValue(EnableSmoothScrollingProperty); }
-            set { SetValue(EnableSmoothScrollingProperty, value); }
-        }
-
-        static void OnEnableSmoothScrollingChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            SyntaxEditor control = (SyntaxEditor)sender;
-            control.SetEnableSmoothScrolling((bool)e.NewValue);
         }
 
         public void SetEnableSmoothScrolling(bool enabled) {
             UpdateOption(EditorOption.SmoothScrolling, enabled);
         }
 
-        public bool EnableScrollBeyondLastLine {
-            get { return (bool)GetValue(EnableScrollBeyondLastLineProperty); }
-            set { SetValue(EnableScrollBeyondLastLineProperty, value); }
-        }
-
-        static void OnEnableScrollBeyondLastLineChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            SyntaxEditor control = (SyntaxEditor)sender;
-            control.SetEnableScrollBeyondLastLine((bool)e.NewValue);
-        }
-
         void SetEnableScrollBeyondLastLine(bool enabled) {
             UpdateOption(EditorOption.ScrollBeyondLastLine, enabled);
-        }
-
-        public int ScrollBeyondLastColumn {
-            get { return (int)GetValue(ScrollBeyondLastColumnProperty); }
-            set { SetValue(ScrollBeyondLastColumnProperty, value); }
-        }
-
-        static void ScrollBeyondLastColumnChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            SyntaxEditor control = (SyntaxEditor)sender;
-            control.SetScrollBeyondLastColumn((int)e.NewValue);
         }
 
         public void SetScrollBeyondLastColumn(int columns) {
             UpdateOption(EditorOption.ScrollBeyondLastColumn, columns);
         }
 
-        public int LineNumbersMinChars {
-            get { return (int)GetValue(LineNumbersMinCharsProperty); }
-            set { SetValue(LineNumbersMinCharsProperty, value); }
-        }
-
-        static void OnLineNumbersMinCharsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            SyntaxEditor control = (SyntaxEditor)sender;
-            control.SetLineNumbersMinChars((int)e.NewValue);
-        }
-
         void SetLineNumbersMinChars(int minChars) {
             UpdateOption(EditorOption.LineNumbersMinChars, minChars);
-        }
-
-        public bool EnableDragAndDrop {
-            get { return (bool)GetValue(EnableDragAndDropProperty); }
-            set { SetValue(EnableDragAndDropProperty, value); }
-        }
-
-        static void OnEnableDragAndDropChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            SyntaxEditor control = (SyntaxEditor)sender;
-            control.SetEnableDragAndDrop((bool)e.NewValue);
         }
 
         void SetEnableDragAndDrop(bool enabled) {
             UpdateOption(EditorOption.DragAndDrop, enabled);
         }
 
-        public bool EnableMouseWheelZoom {
-            get { return (bool)GetValue(EnableMouseWheelZoomProperty); }
-            set { SetValue(EnableMouseWheelZoomProperty, value); }
-        }
-
-        static void EnableMouseWheelZoomChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            SyntaxEditor control = (SyntaxEditor)sender;
-            control.SetEnableMouseWheelZoom((bool)e.NewValue);
-        }
-
         void SetEnableMouseWheelZoom(bool enabled) {
             UpdateOption(EditorOption.MouseWheelZoom, enabled);
-        }
-
-        public EditorWordWrap WordWrap {
-            get { return (EditorWordWrap)GetValue(WordWrapProperty); }
-            set { SetValue(WordWrapProperty, value); }
-        }
-
-        static void WordWrapChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            SyntaxEditor control = (SyntaxEditor)sender;
-            control.SetWordWrap((EditorWordWrap)e.NewValue);
         }
 
         void SetWordWrap(EditorWordWrap wordWrap) {
@@ -357,79 +478,20 @@ namespace SyntaxEditor {
             UpdateOption(EditorOption.WordWrap, monacoValue);
         }
 
-        public bool EnableStickyScroll{
-            get { return (bool)GetValue(EnableStickyScrollProperty); }
-            set { SetValue(EnableStickyScrollProperty, value); }
-        }
-
-        static void OnEnableStickyScrollChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            SyntaxEditor control = (SyntaxEditor)sender;
-            control.SetEnableStickyScroll((bool)e.NewValue);
-        }
-
         void SetEnableStickyScroll(bool enabled) {
             UpdateOption(EditorOption.StickyScroll, new { enabled = enabled });
-        }
-
-        //When DetectIndentation is enabled, Monaco may override TabSize based on the file content.
-        public int TabSize {
-            get { return (int)GetValue(TabSizeProperty); }
-            set { SetValue(TabSizeProperty, value); }
-        }
-
-        static bool ValidateTabSize(object value) {
-            if(value is int i)
-                return i > 0 && i <= 64;
-
-            return false;
-        }
-
-        static void OnTabSizeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            SyntaxEditor control = (SyntaxEditor)sender;
-            control.SetTabSize((int)e.NewValue);
         }
 
         public void SetTabSize(int size) {
             UpdateOption(EditorOption.TabSize, size);
         }
 
-        public bool DetectIndentation {
-            get { return (bool)GetValue(DetectIndentationProperty); }
-            set { SetValue(DetectIndentationProperty, value); }
-        }
-
-        static void OnDetectIndentationChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            SyntaxEditor control = (SyntaxEditor)sender;
-            control.SetDetectIndentation((bool)e.NewValue);
-        }
-
         void SetDetectIndentation(bool detect) {
             UpdateOption(EditorOption.DetectIndentation, detect);
         }
 
-        public bool InsertSpaces {
-            get { return (bool)GetValue(InsertSpacesProperty); }
-            set { SetValue(InsertSpacesProperty, value); }
-        }
-
-        static void OnInsertSpacesChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            SyntaxEditor control = (SyntaxEditor)sender;
-            control.SetInsertSpaces((bool)e.NewValue);
-        }
-
         void SetInsertSpaces(bool insertSpaces) {
             UpdateOption(EditorOption.InsertSpaces, insertSpaces);
-        }
-
-        // autoindent is not updated at runtime. you must to set some properties like TabSize to new value to force editor to use a new value.
-        public EditorAutoIndent AutoIndent {
-            get { return (EditorAutoIndent)GetValue(AutoIndentProperty); }
-            set { SetValue(AutoIndentProperty, value); }
-        }
-
-        static void AutoIndentChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            SyntaxEditor control = (SyntaxEditor)sender;
-            control.SetAutoIndent((EditorAutoIndent)e.NewValue);
         }
 
         void SetAutoIndent(EditorAutoIndent autoIndent) {
@@ -446,60 +508,35 @@ namespace SyntaxEditor {
             SetTabSize(TabSize); // a worcaround for Monaco resetting TabSize when AutoIndent is changed - we need to reapply it after changing AutoIndent.
         }
 
-        public bool EnableQuickSuggestions {
-            get { return (bool)GetValue(EnableQuickSuggestionsProperty); }
-            set { SetValue(EnableQuickSuggestionsProperty, value); }
-        }
-
-        static void OnEnableQuickSuggestionsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            SyntaxEditor control = (SyntaxEditor)sender;
-            control.SetEnableQuickSuggestions((bool)e.NewValue);
-        }
-
         void SetEnableQuickSuggestions(bool enabled) {
             UpdateOption(EditorOption.EnableQuickSuggestions, enabled);
         }
 
-        public bool EnableWordBasedSuggestions {
-            get { return (bool)GetValue(EnableWordBasedSuggestionsProperty); }
-            set { SetValue(EnableWordBasedSuggestionsProperty, value); }
-        }
-
-        static void OnEnableWordBasedSuggestionsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            SyntaxEditor control = (SyntaxEditor)sender;
-            control.SetEnableWordBasedSuggestions((bool)e.NewValue);
-        }
         void SetEnableWordBasedSuggestions(bool enabled) {
             string value = enabled ? "currentDocument" : "off";
             UpdateOption(EditorOption.EnableWordBasedSuggestions, value);
-        }
-
-        public bool EnableSuggestOnTriggerCharacters {
-            get { return (bool)GetValue(EnableSuggestOnTriggerCharactersProperty); }
-            set { SetValue(EnableSuggestOnTriggerCharactersProperty, value); }
-        }
-        static void OnEnableSuggestOnTriggerCharactersChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            SyntaxEditor control = (SyntaxEditor)sender;
-            control.SetEnableSuggestOnTriggerCharacters((bool)e.NewValue);
         }
 
         void SetEnableSuggestOnTriggerCharacters(bool enabled) {
             UpdateOption(EditorOption.EnableSuggestOnTriggerCharacters, enabled);
         }
 
-        public bool EnableParameterHints {
-            get { return (bool)GetValue(EnableParameterHintsProperty); }
-            set { SetValue(EnableParameterHintsProperty, value); }
-        }
-
-        static void OnEnableParameterHintsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            SyntaxEditor control = (SyntaxEditor)sender;
-            control.SetEnableParameterHints((bool)e.NewValue);
-        }
-
         void SetEnableParameterHints(bool enabled) {
             object value = new { enabled };
             UpdateOption(EditorOption.EnableParameterHints, value);
+        }
+
+        void SetTheme(string themeName) {
+            if(string.IsNullOrWhiteSpace(themeName))
+                return;
+            SendCommand(EditorCommandType.SetTheme, themeName);
+        }
+
+        void SetEditorLanguage(string language) {
+            if(string.IsNullOrWhiteSpace(language))
+                return;
+
+            SendCommand(EditorCommandType.SetLanguage, language);
         }
 
         void SendCommand(EditorCommandType type, object? payload = null) {
@@ -590,22 +627,6 @@ namespace SyntaxEditor {
         static string ToHex(Color c, bool addHashTag = true)
             => $"{(addHashTag ? "#" : string.Empty)}{c.R:X2}{c.G:X2}{c.B:X2}".ToLower();
 
-        public string ThemeName {
-            get { return (string)GetValue(ThemeNameProperty); }
-            set { SetValue(ThemeNameProperty, value); }
-        }
-
-        static void OnThemeNameChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            SyntaxEditor control = (SyntaxEditor)sender;
-            control.SetTheme((string)e.NewValue);
-        }
-
-        void SetTheme(string themeName) {
-            if(string.IsNullOrWhiteSpace(themeName))
-                return;
-            SendCommand(EditorCommandType.SetTheme, themeName);
-        }
-
         void CoreWebView2_WebMessageReceived(object? sender, CoreWebView2WebMessageReceivedEventArgs e) {
             if(sender is not CoreWebView2)
                 return;
@@ -678,26 +699,6 @@ namespace SyntaxEditor {
                 Dispatcher.Invoke(() =>
                     EditorInitialized?.Invoke(this, EventArgs.Empty));
             }
-        }
-
-        public string EditorLanguage {
-            get { return (string)GetValue(EditorLanguageProperty); }
-            set { SetValue(EditorLanguageProperty, value); }
-        }
-
-        static void OnEditorLanguageChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            if(Equals(e.OldValue, e.NewValue))
-                return;
-
-            SyntaxEditor control = (SyntaxEditor)sender;
-            control.SetEditorLanguage((string)e.NewValue);
-        }
-
-        void SetEditorLanguage(string language) {
-            if(string.IsNullOrWhiteSpace(language))
-                return;
-
-            SendCommand(EditorCommandType.SetLanguage, language);
         }
 
         public async Task<IReadOnlyList<string>> GetAvailableLanguagesAsync(CancellationToken cancellationToken = default) {
