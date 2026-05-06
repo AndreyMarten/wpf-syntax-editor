@@ -249,14 +249,14 @@ namespace VS
 		}
 
 
-		protected ObservableCollection<string> _Languages;
+      protected ObservableCollection<string> languages;
 		public ObservableCollection<string> Languages {
 			get {
-				if (this._Languages == null) {
-					this._Languages = new ObservableCollection<string>();
+              if (this.languages == null) {
+					this.languages = new ObservableCollection<string>();
 				}
 
-				return this._Languages;
+             return this.languages;
 			}
 		}
 

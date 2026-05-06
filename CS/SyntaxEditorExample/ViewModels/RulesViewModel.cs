@@ -12,14 +12,14 @@ namespace SyntaxEditorExample.ViewModels {
 
         public IMessageBoxService MessageBoxService => this.GetService<IMessageBoxService>();
 
-        protected ObservableCollection<MonacoThemeRule> _Rules;
+        protected ObservableCollection<MonacoThemeRule> rules;
         public ObservableCollection<MonacoThemeRule> Rules {
             get {
-                if (this._Rules == null) {
-                    this._Rules = new ObservableCollection<MonacoThemeRule>();
+                if (this.rules == null) {
+                    this.rules = new ObservableCollection<MonacoThemeRule>();
                 }
 
-                return this._Rules;
+                return this.rules;
             }
         }
 

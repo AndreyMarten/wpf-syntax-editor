@@ -26,9 +26,9 @@ namespace SyntaxEditor {
             MarkAsSavedCommand = new DelegateCommand(MarkAsSaved);
         }
 
-        private WebView2? _webView;
-        private bool _editorReady;
-        private bool _updatingFromEditor;
+        private WebView2? webView;
+        private bool editorReady;
+        private bool updatingFromEditor;
 
         #region Basic Properties and Commands
 
@@ -44,7 +44,7 @@ namespace SyntaxEditor {
         private static void OnTextChanged(object sender, DependencyPropertyChangedEventArgs e) {
             var control = (SyntaxEditor)sender;
 
-            if (control._updatingFromEditor)
+            if (control.updatingFromEditor)
                 return;
 
             var text = e.NewValue as string ?? string.Empty;
@@ -613,7 +613,7 @@ namespace SyntaxEditor {
         #endregion Options
 
         private void SendCommand(EditorCommandType type, object? payload = null) {
-            if (!_editorReady)
+            if (!editorReady)
                 return;
 
             var cmd = new EditorCommand {
@@ -624,7 +624,7 @@ namespace SyntaxEditor {
             var options = new JsonSerializerOptions(JsonSerializerOptions.Web);
 
             var json = JsonSerializer.Serialize(cmd, options);
-            _webView?.CoreWebView2.PostWebMessageAsJson(json);
+            webView?.CoreWebView2.PostWebMessageAsJson(json);
         }
 
         #region Theming
@@ -760,20 +760,20 @@ namespace SyntaxEditor {
 
         private void HandleTextChanged(string text) {
 
-            _updatingFromEditor = true;
+            updatingFromEditor = true;
 
             try {
                 SetCurrentValue(TextProperty, text);
             } finally {
-                _updatingFromEditor = false;
+                updatingFromEditor = false;
             }
         }
 
         private void HandleEditorReady() {
-            if (_editorReady)
+            if (editorReady)
                 return;
 
-            _editorReady = true;
+            editorReady = true;
             ApplyCurrentState();
             RaiseEditorInitialized();
         }
@@ -849,7 +849,7 @@ namespace SyntaxEditor {
 
         // Cache for registered languages, to restore when webview2 is recreated.
         // Note: This is a simple cache and does not handle updates to existing languages or removal of languages.
-        private readonly Dictionary<string, LanguageDescriptor> _registeredLanguages = new();
+        private readonly Dictionary<string, LanguageDescriptor> registeredLanguages = new();
 
         // Language must contain Monarch and Configuration strings identical to how it is used in Monaco - JS object.
         public void RegisterLanguage(LanguageDescriptor language) {
@@ -862,11 +862,11 @@ namespace SyntaxEditor {
                 configuration = language.Configuration
             };
             SendCommand(EditorCommandType.RegisterLanguage, payload);
-            _registeredLanguages[language.Id] = language;
+            registeredLanguages[language.Id] = language;
         }
 
         private void RestoreRegisteredLanguages() {
-            foreach (var language in _registeredLanguages.Values) {
+            foreach (var language in registeredLanguages.Values) {
                 RegisterLanguage(language);
             }
         }
@@ -883,7 +883,7 @@ namespace SyntaxEditor {
             if (newWebView == null)
                 throw new InvalidOperationException("PART_WebView not found.");
 
-            if (_webView == newWebView)
+            if (webView == newWebView)
                 return;
 
             DetachWebView();
@@ -892,19 +892,19 @@ namespace SyntaxEditor {
         }
 
         private void AttachWebView(WebView2 webView) {
-            _webView = webView;
-            _editorReady = false;
+            this.webView = webView;
+            editorReady = false;
             _ = InitializeAsync();
         }
 
         private async Task InitializeAsync() {
-            var webView = _webView;
+            var webView = this.webView;
             if (webView == null)
                 return;
 
             await webView.EnsureCoreWebView2Async();
 
-            if (_webView != webView)
+            if (this.webView != webView)
                 return;
 
             webView.CoreWebView2.WebMessageReceived -= CoreWebView2_WebMessageReceived;
@@ -926,23 +926,23 @@ namespace SyntaxEditor {
 
         private void DisposeWebView() {
             DetachWebView();
-            _webView?.Dispose();
-            _webView = null;
-            _editorReady = false;
+            webView?.Dispose();
+            webView = null;
+            editorReady = false;
         }
 
-        private bool _disposed;
+        private bool disposed;
 
         public void Dispose() {
-            if (_disposed)
+            if (disposed)
                 return;
 
             DisposeWebView();
-            _disposed = true;
+            disposed = true;
         }
 
         public void DetachWebView() {
-            var webView = _webView;
+            var webView = this.webView;
             if (webView?.CoreWebView2 != null) {
                 webView.CoreWebView2.WebMessageReceived -= CoreWebView2_WebMessageReceived;
                 webView.CoreWebView2.ContextMenuRequested -= CoreWebView2_ContextMenuRequested;
