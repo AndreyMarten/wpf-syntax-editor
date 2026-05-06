@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 namespace SyntaxEditorExample.ViewModels {
 	public class MainViewModel : ViewModelBase {
 
+		protected ObservableCollection<string> languages;
 
 		string MyLangMonarch = @"{
   defaultToken: ""invalid"",
@@ -245,9 +246,6 @@ namespace VS
 		public bool CanSaveFile() {
 			return this.SaveFileDialogService != null;
 		}
-
-
-      protected ObservableCollection<string> languages;
 		public ObservableCollection<string> Languages {
 			get {
               if (this.languages == null) {

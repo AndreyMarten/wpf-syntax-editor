@@ -4,6 +4,8 @@ using System.Text.RegularExpressions;
 
 namespace SyntaxEditorExample.ViewModels {
     public class CustomLanguageViewModel : ViewModelBase, IDataErrorInfo {
+        static readonly Regex LanguageIdRegex = new("^[a-zA-Z0-9\\-_]+$", RegexOptions.Compiled);
+
         public string LanguageId {
             get { return this.GetValue<string>(); }
             set { this.SetValue(value); }
@@ -20,8 +22,6 @@ namespace SyntaxEditorExample.ViewModels {
         }
 
         public string? Error => null;
-
-        static readonly Regex LanguageIdRegex = new("^[a-zA-Z0-9\\-_]+$", RegexOptions.Compiled);
 
         public string? this[string columnName] {
             get {

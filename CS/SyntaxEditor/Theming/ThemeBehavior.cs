@@ -8,6 +8,10 @@ using System.Windows.Media;
 namespace SyntaxEditor.Theming {
     public class ThemeBehavior : Behavior<SyntaxEditor> {
 
+        public static readonly DependencyProperty RulesProperty = DependencyProperty.Register(nameof(Rules), typeof(IReadOnlyList<MonacoThemeRule>), typeof(ThemeBehavior), new PropertyMetadata(null, OnRulesChanged));
+
+        public static readonly DependencyProperty ApplyDevExpressColorsProperty = DependencyProperty.Register(nameof(ApplyDevExpressColors), typeof(bool), typeof(ThemeBehavior), new PropertyMetadata(true, OnApplyDevExpressColorsChanged));
+
         static ThemeBehavior() {
             if (!CompatibilitySettings.UseLightweightThemes) {
                 throw new InvalidOperationException("Lightweight themes must be used to use MonacoThemeBehavior.");
@@ -26,9 +30,6 @@ namespace SyntaxEditor.Theming {
             set => SetValue(RulesProperty, value);
         }
 
-        public static readonly DependencyProperty RulesProperty = 
-            DependencyProperty.Register(nameof(Rules), typeof(IReadOnlyList<MonacoThemeRule>), typeof(ThemeBehavior), new PropertyMetadata(null, OnRulesChanged));
-
         static void OnRulesChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var behavior = (ThemeBehavior)sender;
             behavior.ApplyCurrentTheme();
@@ -38,9 +39,6 @@ namespace SyntaxEditor.Theming {
             get { return (bool)GetValue(ApplyDevExpressColorsProperty); }
             set { SetValue(ApplyDevExpressColorsProperty, value); }
         }
-
-        public static readonly DependencyProperty ApplyDevExpressColorsProperty =
-            DependencyProperty.Register(nameof(ApplyDevExpressColors), typeof(bool), typeof(ThemeBehavior), new PropertyMetadata(true, OnApplyDevExpressColorsChanged));
 
         static void OnApplyDevExpressColorsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var behavior = (ThemeBehavior)sender;
